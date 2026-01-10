@@ -172,9 +172,19 @@ export async function updateAsset(
   }
 }
 
-// Delete asset
-export async function deleteAsset(assetId: string) {
+// Delete asset (check ownership)
+export async function deleteAsset(assetId: string, userId: string) {
   try {
+    const asset = await getAsset(assetId);
+
+    if (!asset) {
+      throw new Error("Asset not found");
+    }
+
+    if (asset.authorId !== userId) {
+      throw new Error("You can only delete your own assets");
+    }
+
     const docRef = doc(db, ASSETS_COLLECTION, assetId);
     await deleteDoc(docRef);
   } catch (error) {
