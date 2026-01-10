@@ -45,12 +45,12 @@ export default function Messages() {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header - Fixed at top */}
       <div className="border-b border-border/20 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center gap-3">
-            <Mail size={32} className="text-primary" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center gap-2">
+            <Mail size={20} className="text-primary" />
             <div>
-              <h1 className="text-3xl font-bold text-foreground">Messages</h1>
-              <p className="text-muted-foreground text-sm mt-1">
+              <h1 className="text-2xl font-bold text-foreground">Messages</h1>
+              <p className="text-muted-foreground text-xs mt-0.5">
                 Group invitations and notifications
               </p>
             </div>
@@ -60,22 +60,22 @@ export default function Messages() {
 
       {/* Messages Content - Scrollable */}
       <div className="flex-1 overflow-y-auto">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {displayedInvites.length === 0 ? (
-            <div className="text-center py-12">
+            <div className="text-center py-8">
               <Mail
-                size={48}
-                className="text-muted-foreground mx-auto mb-4 opacity-50"
+                size={32}
+                className="text-muted-foreground mx-auto mb-3 opacity-50"
               />
-              <h2 className="text-xl font-semibold text-foreground mb-2">
+              <h2 className="text-base font-semibold text-foreground mb-1">
                 No messages yet
               </h2>
-              <p className="text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 You haven't received any group invitations yet.
               </p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {displayedInvites.map((invite) => (
                 <GroupInviteMessage
                   key={invite.id}

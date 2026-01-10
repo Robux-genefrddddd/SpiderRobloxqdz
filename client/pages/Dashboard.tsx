@@ -91,26 +91,26 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-6 md:py-8">
+      <div className="container mx-auto px-4 py-4 md:py-5">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-5">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold mb-1">Dashboard</h1>
-            <p className="text-sm text-muted-foreground">
+            <h1 className="text-xl md:text-2xl font-bold mb-0.5">Dashboard</h1>
+            <p className="text-xs text-muted-foreground">
               Welcome back, {userProfile?.displayName || "Creator"}! Manage your
               assets and track your success.
             </p>
           </div>
           <Link to="/upload">
             <Button size="sm" className="gap-2">
-              <UploadIcon size={18} />
-              Upload Asset
+              <UploadIcon size={16} />
+              Upload
             </Button>
           </Link>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-6 border-b border-border overflow-x-auto">
+        <div className="flex gap-3 mb-5 border-b border-border overflow-x-auto">
           {[
             { id: "overview", label: "Overview" },
             { id: "assets", label: "My Assets" },
@@ -133,121 +133,119 @@ export default function Dashboard() {
 
         {/* Overview Tab */}
         {activeTab === "overview" && (
-          <div className="space-y-6">
+          <div className="space-y-5">
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-              <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+              <div className="bg-secondary/50 border border-border rounded-lg p-3 space-y-1">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-medium text-muted-foreground">
                     Total Earnings
                   </h3>
-                  <div className="w-8 h-8 rounded-lg bg-green-500/20 text-green-400 flex items-center justify-center">
-                    <DollarSign size={16} />
+                  <div className="w-6 h-6 rounded-lg bg-green-500/20 text-green-400 flex items-center justify-center">
+                    <DollarSign size={14} />
                   </div>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-xl font-bold text-foreground">
                     ${stats.totalEarnings.toFixed(2)}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    From your published assets
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    From assets
                   </p>
                 </div>
               </div>
 
-              <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-2">
+              <div className="bg-secondary/50 border border-border rounded-lg p-3 space-y-1">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-medium text-muted-foreground">
                     Total Downloads
                   </h3>
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center">
-                    <Download size={16} />
+                  <div className="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center">
+                    <Download size={14} />
                   </div>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-xl font-bold text-foreground">
                     {stats.totalDownloads.toLocaleString()}
                   </p>
-                  <p className="text-xs text-blue-400 mt-1">
-                    Total asset downloads
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Downloads
                   </p>
                 </div>
               </div>
 
-              <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-2">
+              <div className="bg-secondary/50 border border-border rounded-lg p-3 space-y-1">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-medium text-muted-foreground">
                     Published Assets
                   </h3>
-                  <div className="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
-                    <TrendingUp size={16} />
+                  <div className="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
+                    <TrendingUp size={14} />
                   </div>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-xl font-bold text-foreground">
                     {stats.totalAssets}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Active on marketplace
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Published
                   </p>
                 </div>
               </div>
 
-              <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-2">
+              <div className="bg-secondary/50 border border-border rounded-lg p-3 space-y-1">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-medium text-muted-foreground">
                     Avg. Rating
                   </h3>
-                  <div className="w-8 h-8 rounded-lg bg-yellow-500/20 text-yellow-400 flex items-center justify-center">
-                    <Star size={16} />
+                  <div className="w-6 h-6 rounded-lg bg-yellow-500/20 text-yellow-400 flex items-center justify-center">
+                    <Star size={14} />
                   </div>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-xl font-bold text-foreground">
                     {stats.avgRating}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Average from reviews
-                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Rating</p>
                 </div>
               </div>
             </div>
 
             {/* Recent Assets */}
-            <div className="bg-secondary/30 border border-border rounded-lg p-4">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-sm text-foreground">
+            <div className="bg-secondary/30 border border-border rounded-lg p-3">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-xs text-foreground">
                   {assets.length === 0 ? "No Assets Yet" : "Your Recent Assets"}
                 </h3>
               </div>
 
               {assets.length === 0 ? (
-                <div className="text-center py-8 space-y-3">
-                  <p className="text-sm text-muted-foreground">
+                <div className="text-center py-6 space-y-2">
+                  <p className="text-xs text-muted-foreground">
                     You haven't uploaded any assets yet.
                   </p>
                   <Link to="/upload">
-                    <Button size="sm">
-                      <UploadIcon size={14} className="mr-2" />
-                      Upload Your First Asset
+                    <Button size="sm" className="text-xs">
+                      <UploadIcon size={12} className="mr-1" />
+                      Upload Asset
                     </Button>
                   </Link>
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {assets.slice(0, 5).map((asset) => (
                     <div
                       key={asset.id}
-                      className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg hover:bg-secondary/70 transition-colors"
+                      className="flex items-center justify-between p-2 bg-secondary/50 rounded-lg hover:bg-secondary/70 transition-colors"
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
                         <img
                           src={asset.imageUrl}
                           alt={asset.name}
-                          className="w-10 h-10 rounded object-cover"
+                          className="w-8 h-8 rounded object-cover"
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-foreground truncate">
+                          <p className="text-xs font-medium text-foreground truncate">
                             {asset.name}
                           </p>
                           <p className="text-xs text-muted-foreground">
@@ -255,10 +253,10 @@ export default function Dashboard() {
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
                         <div className="text-right">
                           <p className="text-xs font-medium text-foreground">
-                            {asset.downloads} downloads
+                            {asset.downloads}
                           </p>
                           <p className="text-xs text-muted-foreground">
                             ${(asset.price || 0).toFixed(2)}
@@ -266,8 +264,8 @@ export default function Dashboard() {
                         </div>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <button className="p-1.5 hover:bg-secondary rounded transition-colors">
-                              <MoreVertical size={14} />
+                            <button className="p-1 hover:bg-secondary rounded transition-colors">
+                              <MoreVertical size={12} />
                             </button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
@@ -275,7 +273,7 @@ export default function Dashboard() {
                               <Link to={`/asset/${asset.id}`}>View Asset</Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem disabled>
-                              Edit Asset (Coming Soon)
+                              Edit (Coming Soon)
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -290,57 +288,57 @@ export default function Dashboard() {
 
         {/* Assets Tab */}
         {activeTab === "assets" && (
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <p className="text-sm text-muted-foreground">
-                You have {assets.length} published{" "}
+              <p className="text-xs text-muted-foreground">
+                {assets.length} published{" "}
                 {assets.length === 1 ? "asset" : "assets"}
               </p>
               <Link to="/upload">
-                <Button size="sm">
-                  <UploadIcon size={14} />
-                  New Asset
+                <Button size="sm" className="text-xs">
+                  <UploadIcon size={12} />
+                  New
                 </Button>
               </Link>
             </div>
 
             {assets.length === 0 ? (
-              <div className="bg-secondary/30 border border-border rounded-lg p-8 text-center space-y-3">
-                <p className="text-sm text-muted-foreground">
+              <div className="bg-secondary/30 border border-border rounded-lg p-6 text-center space-y-2">
+                <p className="text-xs text-muted-foreground">
                   You haven't uploaded any assets yet.
                 </p>
                 <Link to="/upload">
-                  <Button size="sm">
-                    <UploadIcon size={14} className="mr-2" />
-                    Upload Your First Asset
+                  <Button size="sm" className="text-xs">
+                    <UploadIcon size={12} className="mr-1" />
+                    Upload Asset
                   </Button>
                 </Link>
               </div>
             ) : (
-              <div className="grid gap-4">
+              <div className="grid gap-3">
                 {assets.map((asset) => (
                   <div
                     key={asset.id}
-                    className="bg-secondary/30 border border-border rounded-lg p-4 hover:border-border/80 transition-all"
+                    className="bg-secondary/30 border border-border rounded-lg p-3 hover:border-border/80 transition-all"
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex items-start gap-3 flex-1">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-2 flex-1">
                         <img
                           src={asset.imageUrl}
                           alt={asset.name}
-                          className="w-16 h-16 rounded object-cover flex-shrink-0"
+                          className="w-12 h-12 rounded object-cover flex-shrink-0"
                         />
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-base font-semibold text-foreground">
+                          <h3 className="text-sm font-semibold text-foreground">
                             {asset.name}
                           </h3>
                           <p className="text-xs text-muted-foreground">
                             {asset.category}
                           </p>
-                          <p className="text-xs text-muted-foreground mt-1 line-clamp-1">
+                          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
                             {asset.description}
                           </p>
-                          <div className="flex gap-4 mt-2 text-xs">
+                          <div className="flex gap-3 mt-1 text-xs">
                             <div>
                               <p className="text-muted-foreground">Downloads</p>
                               <p className="font-semibold text-foreground">
@@ -356,7 +354,7 @@ export default function Dashboard() {
                             <div>
                               <p className="text-muted-foreground">Rating</p>
                               <p className="font-semibold text-foreground">
-                                ⭐ {asset.rating}
+                                {asset.rating}
                               </p>
                             </div>
                           </div>
@@ -414,12 +412,12 @@ export default function Dashboard() {
 
         {/* Warnings Tab */}
         {activeTab === "warnings" && (
-          <div className="space-y-4">
-            <div className="bg-secondary/30 border border-border rounded-lg p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <AlertTriangle size={24} className="text-yellow-400" />
+          <div className="space-y-3">
+            <div className="bg-secondary/30 border border-border rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <AlertTriangle size={18} className="text-yellow-400" />
                 <div>
-                  <h3 className="font-semibold text-foreground">
+                  <h3 className="font-semibold text-xs text-foreground">
                     Your Warnings & Bans
                   </h3>
                   <p className="text-xs text-muted-foreground">
@@ -433,12 +431,12 @@ export default function Dashboard() {
         )}
 
         {/* Logout Button */}
-        <div className="mt-8 pt-6 border-t border-border">
+        <div className="mt-6 pt-4 border-t border-border">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 rounded-lg transition-colors font-medium"
+            className="flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-lg transition-colors font-medium"
           >
-            <LogOut size={16} />
+            <LogOut size={14} />
             Sign Out
           </button>
         </div>

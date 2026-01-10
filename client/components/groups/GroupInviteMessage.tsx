@@ -61,9 +61,9 @@ export default function GroupInviteMessage({
   };
 
   return (
-    <div className="bg-secondary border border-border rounded-lg p-4">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex gap-3 flex-1 min-w-0">
+    <div className="bg-secondary border border-border rounded-lg p-3">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex gap-2.5 flex-1 min-w-0">
           {/* Inviter Avatar */}
           <div className="flex-shrink-0">
             <img
@@ -72,40 +72,41 @@ export default function GroupInviteMessage({
                 "https://tr.rbxcdn.com/180DAY-bd2c1a5fc86fd014cbbbaaafdd777643/420/420/Hat/Webp/noFilter"
               }
               alt={invite.inviterName}
-              className="w-10 h-10 rounded-full"
+              className="w-8 h-8 rounded-full"
             />
           </div>
 
           {/* Invite Details */}
           <div className="flex-1 min-w-0">
-            <h4 className="font-semibold text-foreground">
+            <h4 className="font-semibold text-xs text-foreground">
               {invite.inviterName} invited you to join{" "}
               <span className="text-primary">{invite.groupName}</span>
             </h4>
 
             {invite.message && (
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 {invite.message}
               </p>
             )}
 
-            <p className="text-xs text-muted-foreground mt-2">
+            <p className="text-xs text-muted-foreground mt-1">
               {new Date(invite.invitationDate).toLocaleDateString()}
             </p>
           </div>
         </div>
 
         {/* Actions */}
-        <div className="flex gap-2 flex-shrink-0">
+        <div className="flex gap-1.5 flex-shrink-0">
           <Button
             size="sm"
             onClick={handleAccept}
             disabled={accepting || declining}
+            className="text-xs px-3"
           >
             {accepting ? (
-              <Loader size={14} className="animate-spin mr-1" />
+              <Loader size={12} className="animate-spin mr-1" />
             ) : (
-              <Check size={14} className="mr-1" />
+              <Check size={12} className="mr-1" />
             )}
             Join
           </Button>
@@ -115,11 +116,12 @@ export default function GroupInviteMessage({
             variant="ghost"
             onClick={handleDecline}
             disabled={accepting || declining}
+            className="text-xs px-2"
           >
             {declining ? (
-              <Loader size={14} className="animate-spin" />
+              <Loader size={12} className="animate-spin" />
             ) : (
-              <X size={14} />
+              <X size={12} />
             )}
           </Button>
         </div>
