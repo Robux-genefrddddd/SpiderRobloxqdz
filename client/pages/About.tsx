@@ -176,15 +176,19 @@ export default function About() {
               <p className="text-muted-foreground">No team members yet</p>
             </div>
           ) : (
-            <div className="space-y-10">
+            <div className="space-y-8">
               {/* Founders */}
               {teamByRole.founder.length > 0 && (
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <Crown size={20} className="text-yellow-400" />
-                    <h3 className="text-lg font-semibold">Founders</h3>
+                    <img
+                      src="https://cdn.builder.io/api/v1/image/assets%2F6efe5c975de742218614020f75c6e644%2Fb430cdb925bf47f09a9d7c95a02f3bd0?format=webp&width=800"
+                      alt="Founder"
+                      className="w-4 h-4"
+                    />
+                    <h3 className="text-sm font-semibold">Founders</h3>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {teamByRole.founder.map((member) => (
                       <TeamCard key={member.uid} member={member} />
                     ))}
@@ -194,12 +198,16 @@ export default function About() {
 
               {/* Admins */}
               {teamByRole.admin.length > 0 && (
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <Shield size={20} className="text-red-400" />
-                    <h3 className="text-lg font-semibold">Administrators</h3>
+                    <img
+                      src="https://cdn.builder.io/api/v1/image/assets%2F6efe5c975de742218614020f75c6e644%2Fb5f004c16bc84ddd977be6eea56f8f20?format=webp&width=800"
+                      alt="Admin"
+                      className="w-4 h-4"
+                    />
+                    <h3 className="text-sm font-semibold">Administrators</h3>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {teamByRole.admin.map((member) => (
                       <TeamCard key={member.uid} member={member} />
                     ))}
@@ -209,12 +217,16 @@ export default function About() {
 
               {/* Partners */}
               {teamByRole.partner.length > 0 && (
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <Users size={20} className="text-blue-400" />
-                    <h3 className="text-lg font-semibold">Partners</h3>
+                    <img
+                      src="https://cdn3.emoji.gg/emojis/42747-roblox-verified.png"
+                      alt="Partner"
+                      className="w-4 h-4"
+                    />
+                    <h3 className="text-sm font-semibold">Partners</h3>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {teamByRole.partner.map((member) => (
                       <TeamCard key={member.uid} member={member} />
                     ))}
@@ -224,12 +236,16 @@ export default function About() {
 
               {/* Support */}
               {teamByRole.support.length > 0 && (
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <Users size={20} className="text-green-400" />
-                    <h3 className="text-lg font-semibold">Support Team</h3>
+                    <img
+                      src="https://cdn3.emoji.gg/emojis/42747-roblox-verified.png"
+                      alt="Support"
+                      className="w-4 h-4"
+                    />
+                    <h3 className="text-sm font-semibold">Support Team</h3>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {teamByRole.support.map((member) => (
                       <TeamCard key={member.uid} member={member} />
                     ))}
