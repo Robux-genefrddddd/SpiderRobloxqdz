@@ -10,13 +10,13 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-6 h-6 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
-                <span className="font-bold text-primary-foreground text-xs">
-                  a
-                </span>
-              </div>
-              <span className="font-semibold text-sm">AssetHub</span>
+            <div className="flex items-center gap-2.5 mb-3">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Roblox_Logo.svg/2048px-Roblox_Logo.svg.png"
+                alt="Roblox"
+                className="h-5 object-contain"
+              />
+              <span className="font-semibold text-sm">RbxAssets</span>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
               Digital marketplace for creators, developers, and studios.
