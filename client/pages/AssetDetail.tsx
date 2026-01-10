@@ -368,10 +368,29 @@ export default function AssetDetail() {
                 <FileDown size={14} />
                 {downloading ? "Downloading..." : "Download Asset"}
               </button>
-              <button className="w-full py-2.5 rounded-lg bg-secondary border border-border/30 font-medium text-sm hover:bg-secondary/80 transition-all flex items-center justify-center gap-2">
-                <Heart size={14} />
-                Save Asset
+              <button
+                onClick={handleToggleFavorite}
+                className={`w-full py-2.5 rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 ${
+                  isFav
+                    ? "bg-accent/20 border border-accent/30 text-accent hover:bg-accent/30"
+                    : "bg-secondary border border-border/30 text-secondary-foreground hover:bg-secondary/80"
+                }`}
+              >
+                <Heart size={14} fill={isFav ? "currentColor" : "none"} />
+                {isFav ? "Saved" : "Save Asset"}
               </button>
+
+              {/* Delete Button (only for asset author) */}
+              {user && user.uid === asset.authorId && (
+                <button
+                  onClick={handleDeleteAsset}
+                  disabled={deletingAsset}
+                  className="w-full py-2.5 rounded-lg bg-red-500/20 border border-red-500/30 text-red-400 font-medium text-sm hover:bg-red-500/30 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+                >
+                  <Trash2 size={14} />
+                  {deletingAsset ? "Deleting..." : "Delete Asset"}
+                </button>
+              )}
             </div>
           </div>
         </div>
