@@ -259,7 +259,7 @@ export default function GroupChat({ groupId }: GroupChatProps) {
               />
               <button
                 onClick={handleDeleteImage}
-                className="absolute top-0.5 right-0.5 bg-destructive text-destructive-foreground rounded-full p-0.5 hover:bg-destructive/90 transition-colors"
+                className="absolute top-0.5 right-0.5 bg-destructive text-destructive-foreground rounded-full p-0.5 hover:bg-destructive/90"
                 type="button"
               >
                 <X size={12} />
