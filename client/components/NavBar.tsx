@@ -451,12 +451,12 @@ export function NavBar() {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.3 }}
-                          className="px-4 py-6 border-t border-border/20"
+                          className="px-3 py-3 border-t border-border/10"
                         >
-                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-2">
+                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-tight px-2 mb-2">
                             Tools
                           </p>
-                          <div className="space-y-1">
+                          <div className="space-y-0.5">
                             <motion.div
                               custom={5}
                               initial="hidden"
@@ -465,16 +465,14 @@ export function NavBar() {
                             >
                               <Link
                                 to="/groups"
-                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
+                                className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-foreground hover:text-primary hover:bg-white/5 transition-colors duration-150 group"
                                 onClick={closeMenu}
                               >
                                 <Users
-                                  size={18}
-                                  className="text-muted-foreground group-hover:text-primary"
+                                  size={16}
+                                  className="text-muted-foreground group-hover:text-primary flex-shrink-0"
                                 />
-                                <span className="text-sm font-medium">
-                                  Groups
-                                </span>
+                                <span className="font-medium">Groups</span>
                               </Link>
                             </motion.div>
                             <motion.div
@@ -485,21 +483,19 @@ export function NavBar() {
                             >
                               <Link
                                 to="/messages"
-                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group relative"
+                                className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-foreground hover:text-primary hover:bg-white/5 transition-colors duration-150 group"
                                 onClick={closeMenu}
                               >
                                 <MessageSquare
-                                  size={18}
-                                  className="text-muted-foreground group-hover:text-primary"
+                                  size={16}
+                                  className="text-muted-foreground group-hover:text-primary flex-shrink-0"
                                 />
-                                <span className="text-sm font-medium flex-1">
-                                  Messages
-                                </span>
+                                <span className="font-medium flex-1">Messages</span>
                                 {unreadCount > 0 && (
                                   <motion.span
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
-                                    className="bg-destructive text-destructive-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center text-center"
+                                    className="bg-destructive text-destructive-foreground text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center text-center flex-shrink-0"
                                   >
                                     {unreadCount > 9 ? "9+" : unreadCount}
                                   </motion.span>
