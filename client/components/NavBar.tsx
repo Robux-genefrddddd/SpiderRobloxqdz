@@ -229,7 +229,7 @@ export function NavBar() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-border/20 bg-secondary/20 flex flex-col h-[calc(100vh-4rem)]">
+          <div className="border-t border-border/20 bg-secondary/20 fixed left-0 top-14 bottom-0 w-64 overflow-y-auto z-40 shadow-lg">
             {/* Top - Logo Section */}
             <div className="px-4 py-3 border-b border-border/20">
               <Link to="/" className="flex items-center gap-2">
