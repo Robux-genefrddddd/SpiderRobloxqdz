@@ -140,22 +140,22 @@
 
 @layer components {
   .card-base {
-    @apply bg-card border border-border/40 rounded-lg;
+    @apply bg-card border border-border/30 rounded-2xl;
   }
 
   .card-hover {
-    @apply card-base transition-all duration-200 hover:border-border/70 hover:bg-card/95 hover:shadow-lg;
+    @apply card-base transition-all duration-200 hover:border-border/60 hover:bg-card/90 hover:shadow-lg;
   }
 
   .btn-primary {
-    @apply px-5 py-2.5 bg-primary text-primary-foreground font-semibold text-sm rounded-lg transition-all duration-150 hover:opacity-85 active:scale-95 shadow-sm;
+    @apply px-5 py-2.5 bg-primary text-primary-foreground font-semibold text-sm rounded-xl transition-all duration-150 hover:opacity-90 active:scale-95 shadow-sm;
   }
 
   .btn-secondary {
-    @apply px-5 py-2.5 bg-secondary text-secondary-foreground font-medium text-sm rounded-lg border border-border/50 transition-all duration-150 hover:bg-muted/80 active:scale-95;
+    @apply px-5 py-2.5 bg-secondary text-secondary-foreground font-medium text-sm rounded-xl border border-border/40 transition-all duration-150 hover:bg-secondary/80 active:scale-95;
   }
 
   .btn-ghost {
-    @apply px-5 py-2.5 text-foreground font-medium text-sm rounded-lg transition-all duration-150 hover:bg-secondary/70;
+    @apply px-5 py-2.5 text-foreground font-medium text-sm rounded-xl transition-all duration-150 hover:bg-secondary/60;
   }
 }
