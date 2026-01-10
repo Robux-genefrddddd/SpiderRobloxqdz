@@ -192,12 +192,7 @@ export default function AdminPanel() {
         <div className="space-y-6 mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold flex items-center gap-3">
-                <div className="p-2 bg-primary/20 rounded-lg">
-                  <Shield size={32} className="text-primary" />
-                </div>
-                Admin Panel
-              </h1>
+              <h1 className="text-4xl font-bold">Admin Panel</h1>
               <p className="text-muted-foreground mt-2">
                 Manage users, issue warnings, and monitor activities
               </p>
