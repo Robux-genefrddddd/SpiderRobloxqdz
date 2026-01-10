@@ -35,7 +35,13 @@ export interface Asset {
   downloads: number;
   rating: number;
   reviews: number;
-  status: "draft" | "uploading" | "verification" | "published" | "archived" | "rejected";
+  status:
+    | "draft"
+    | "uploading"
+    | "verification"
+    | "published"
+    | "archived"
+    | "rejected";
   tags: string[];
   createdAt: Date;
   updatedAt: Date;
@@ -215,5 +221,53 @@ export async function getFeaturedAssets(limitCount: number = 6) {
   } catch (error) {
     console.error("Error fetching featured assets:", error);
     return [];
+  }
+}
+
+// Get site statistics
+export interface SiteStats {
+  totalAssets: number;
+  totalCreators: number;
+  totalDistributed: number;
+}
+
+export async function getSiteStats(): Promise<SiteStats> {
+  try {
+    const q = query(
+      collection(db, ASSETS_COLLECTION),
+      where("status", "==", "published"),
+    );
+    const querySnapshot = await getDocs(q);
+
+    const assets = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+      createdAt: doc.data().createdAt?.toDate?.() || new Date(),
+      updatedAt: doc.data().updatedAt?.toDate?.() || new Date(),
+    })) as Asset[];
+
+    // Calculate stats
+    const totalAssets = assets.length;
+    const uniqueCreators = new Set(assets.map((asset) => asset.authorId));
+    const totalCreators = uniqueCreators.size;
+
+    // Calculate total distributed (sum of price * downloads)
+    const totalDistributed = assets.reduce((sum, asset) => {
+      const assetEarnings = (asset.price || 0) * asset.downloads;
+      return sum + assetEarnings;
+    }, 0);
+
+    return {
+      totalAssets,
+      totalCreators,
+      totalDistributed,
+    };
+  } catch (error) {
+    console.error("Error fetching site stats:", error);
+    return {
+      totalAssets: 0,
+      totalCreators: 0,
+      totalDistributed: 0,
+    };
   }
 }

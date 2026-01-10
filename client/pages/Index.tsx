@@ -1,97 +1,60 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AssetCard } from "@/components/AssetCard";
 import { Search, ArrowRight } from "lucide-react";
 import { Asset } from "@/lib/types";
-
-// Mock featured assets for the homepage
-const featuredAssets: Asset[] = [
-  {
-    id: "1",
-    name: "UI Component Library",
-    description: "Comprehensive UI components for modern applications",
-    type: "asset",
-    imageUrl:
-      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=300&fit=crop",
-    productLink: "https://create.roblox.com/store/asset/1",
-    price: null,
-    category: "UI Design",
-    authorId: "author1",
-    authorName: "Design Studio",
-    authorAvatar:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop",
-    downloads: 2340,
-    rating: 4.8,
-    reviews: 127,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    featured: true,
-  },
-  {
-    id: "2",
-    name: "3D Model Collection",
-    description: "High-quality 3D models for rendering and animation",
-    type: "model",
-    imageUrl:
-      "https://images.unsplash.com/photo-1633356122544-f134324ef6cb?w=400&h=300&fit=crop",
-    productLink: "https://create.roblox.com/store/asset/2",
-    price: 29.99,
-    category: "3D Models",
-    authorId: "author2",
-    authorName: "Model Works",
-    authorAvatar:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop",
-    downloads: 1560,
-    rating: 4.9,
-    reviews: 89,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    featured: true,
-  },
-  {
-    id: "3",
-    name: "JavaScript Utilities",
-    description: "Essential utilities and helpers for JavaScript development",
-    type: "script",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=300&fit=crop",
-    productLink: "https://create.roblox.com/store/asset/3",
-    price: null,
-    category: "Code",
-    authorId: "author3",
-    authorName: "Dev Scripts",
-    authorAvatar:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop",
-    downloads: 3120,
-    rating: 4.7,
-    reviews: 156,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    featured: true,
-  },
-  {
-    id: "4",
-    name: "Motion Graphics Pack",
-    description: "Professional animation and motion design assets",
-    type: "asset",
-    imageUrl:
-      "https://images.unsplash.com/photo-1626921235308-f88c12b71d93?w=400&h=300&fit=crop",
-    productLink: "https://create.roblox.com/store/asset/4",
-    price: 19.99,
-    category: "Animations",
-    authorId: "author4",
-    authorName: "Motion Studio",
-    authorAvatar:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop",
-    downloads: 890,
-    rating: 4.6,
-    reviews: 72,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    featured: true,
-  },
-];
+import { getFeaturedAssets, getSiteStats, SiteStats } from "@/lib/assetService";
 
 export default function Index() {
+  const [featuredAssets, setFeaturedAssets] = useState<Asset[]>([]);
+  const [stats, setStats] = useState<SiteStats>({
+    totalAssets: 0,
+    totalCreators: 0,
+    totalDistributed: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [assets, siteStats] = await Promise.all([
+          getFeaturedAssets(4),
+          getSiteStats(),
+        ]);
+        setFeaturedAssets(assets);
+        setStats(siteStats);
+      } catch (error) {
+        console.error("Error loading homepage data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  // Format large numbers with K, M suffixes
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+      return `${(num / 1000000).toFixed(1)}M`;
+    }
+    if (num >= 1000) {
+      return `${(num / 1000).toFixed(0)}K`;
+    }
+    return num.toString();
+  };
+
+  // Format currency
+  const formatCurrency = (num: number): string => {
+    if (num >= 1000000) {
+      return `$${(num / 1000000).toFixed(1)}M`;
+    }
+    if (num >= 1000) {
+      return `$${(num / 1000).toFixed(0)}K`;
+    }
+    return `$${num.toFixed(0)}`;
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Hero Section - Content-Focused */}
@@ -138,17 +101,23 @@ export default function Index() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 pt-4">
               <div className="p-3 bg-secondary/20 rounded-lg border border-border/20">
-                <p className="text-2xl font-bold">10K+</p>
+                <p className="text-2xl font-bold">
+                  {loading ? "..." : formatNumber(stats.totalAssets) + "+"}
+                </p>
                 <p className="text-xs text-muted-foreground mt-1">
                   Quality Assets
                 </p>
               </div>
               <div className="p-3 bg-secondary/20 rounded-lg border border-border/20">
-                <p className="text-2xl font-bold">50K+</p>
+                <p className="text-2xl font-bold">
+                  {loading ? "..." : formatNumber(stats.totalCreators) + "+"}
+                </p>
                 <p className="text-xs text-muted-foreground mt-1">Creators</p>
               </div>
               <div className="p-3 bg-secondary/20 rounded-lg border border-border/20">
-                <p className="text-2xl font-bold">$2M+</p>
+                <p className="text-2xl font-bold">
+                  {loading ? "..." : formatCurrency(stats.totalDistributed)}
+                </p>
                 <p className="text-xs text-muted-foreground mt-1">
                   Distributed
                 </p>
@@ -203,11 +172,28 @@ export default function Index() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {featuredAssets.map((asset) => (
-              <AssetCard key={asset.id} asset={asset} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {[...Array(4)].map((_, i) => (
+                <div
+                  key={i}
+                  className="h-64 bg-secondary/20 border border-border/20 rounded-2xl animate-pulse"
+                />
+              ))}
+            </div>
+          ) : featuredAssets.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {featuredAssets.map((asset) => (
+                <AssetCard key={asset.id} asset={asset} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">
+                No featured assets available yet
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </div>

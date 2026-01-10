@@ -11,6 +11,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 function RoleBadge({ role }: { role?: string }) {
   if (!role || role === "member") return null;
@@ -35,14 +40,18 @@ function RoleBadge({ role }: { role?: string }) {
 
   if (role === "partner") {
     return (
-      <div className="flex items-center gap-1 px-2 py-1 bg-blue-500/20 rounded-lg">
-        <img
-          src="https://i.ibb.co/n8cZTc4P/G50-Qy3-Ga-MAAih-Up-removebg-preview.png"
-          alt="Partner"
-          className="w-4 h-4"
-        />
-        <span className="text-xs font-semibold text-blue-400">Partner</span>
-      </div>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <img
+            src="https://cdn3.emoji.gg/emojis/42747-roblox-verified.png"
+            alt="Partner"
+            className="w-5 h-5 hover:scale-110 transition-transform cursor-help"
+          />
+        </TooltipTrigger>
+        <TooltipContent side="bottom" className="text-xs">
+          Partner
+        </TooltipContent>
+      </Tooltip>
     );
   }
 

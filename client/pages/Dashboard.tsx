@@ -8,6 +8,7 @@ import {
   Star,
   MoreVertical,
   LogOut,
+  AlertTriangle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,9 +20,12 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { getUserAssets, Asset } from "@/lib/assetService";
 import { logoutUser } from "@/lib/auth";
+import { WarningsSection } from "@/components/WarningsSection";
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState<"overview" | "assets">("overview");
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "assets" | "warnings"
+  >("overview");
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
   const { userProfile, isAuthenticated, user } = useAuth();
@@ -106,20 +110,22 @@ export default function Dashboard() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-6 border-b border-border">
+        <div className="flex gap-4 mb-6 border-b border-border overflow-x-auto">
           {[
             { id: "overview", label: "Overview" },
             { id: "assets", label: "My Assets" },
+            { id: "warnings", label: "Warnings & Bans", icon: AlertTriangle },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`pb-3 px-2 text-sm font-medium transition-colors ${
+              className={`pb-3 px-2 text-sm font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${
                 activeTab === tab.id
                   ? "border-b-2 border-primary text-foreground"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
+              {tab.icon && <tab.icon size={14} />}
               {tab.label}
             </button>
           ))}
@@ -403,6 +409,26 @@ export default function Dashboard() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* Warnings Tab */}
+        {activeTab === "warnings" && (
+          <div className="space-y-4">
+            <div className="bg-secondary/30 border border-border rounded-lg p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <AlertTriangle size={24} className="text-yellow-400" />
+                <div>
+                  <h3 className="font-semibold text-foreground">
+                    Your Warnings & Bans
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    View your account status and any active warnings
+                  </p>
+                </div>
+              </div>
+              {user && <WarningsSection userId={user.uid} canDelete={false} />}
+            </div>
           </div>
         )}
 
