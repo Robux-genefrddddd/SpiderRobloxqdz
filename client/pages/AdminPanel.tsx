@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Users,
-  LogOut,
   Search,
   Shield,
   Clock,
@@ -10,6 +9,9 @@ import {
   AlertTriangle,
   X,
   Mail,
+  Settings,
+  ChevronRight,
+  Activity,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
