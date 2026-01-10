@@ -344,16 +344,16 @@ export function NavBar() {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.25 }}
-                          className="px-4 py-6 border-t border-blue-500/10"
+                          className="px-4 py-6 border-t border-border/20"
                         >
-                          <p className="text-xs font-semibold text-blue-400/70 uppercase tracking-wider mb-4 px-2">
-                            👤 Account
+                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-2">
+                            Account
                           </p>
                           <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.3, duration: 0.3 }}
-                            className="bg-gradient-to-br from-blue-500/15 to-blue-500/5 rounded-xl p-4 mb-4 border border-blue-500/20"
+                            className="bg-secondary/30 rounded-lg p-4 mb-4 border border-border/20"
                           >
                             <div className="flex items-center gap-3">
                               <img
@@ -363,19 +363,19 @@ export function NavBar() {
                                     userProfile.username
                                 }
                                 alt={userProfile.username}
-                                className="w-10 h-10 rounded-lg object-cover border border-blue-500/30"
+                                className="w-10 h-10 rounded-md object-cover border border-border/30"
                               />
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-bold text-white truncate">
+                                <p className="text-sm font-semibold text-foreground truncate">
                                   {userProfile.username}
                                 </p>
-                                <p className="text-xs text-slate-500 truncate">
+                                <p className="text-xs text-muted-foreground truncate">
                                   {userProfile.email}
                                 </p>
                               </div>
                             </div>
                           </motion.div>
-                          <div className="space-y-2">
+                          <div className="space-y-1">
                             <motion.div
                               custom={3}
                               initial="hidden"
@@ -384,21 +384,11 @@ export function NavBar() {
                             >
                               <Link
                                 to="/dashboard"
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-500/15 transition-all duration-200 font-medium text-slate-100 hover:text-blue-300 group"
+                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-secondary/50 transition-colors duration-150 text-foreground hover:text-primary group"
                                 onClick={closeMenu}
                               >
-                                <span className="text-2xl group-hover:scale-125 transition-transform duration-200">
-                                  📊
-                                </span>
-                                <div className="flex-1">
-                                  <div className="text-sm font-semibold">
-                                    Dashboard
-                                  </div>
-                                  <div className="text-xs text-slate-500">
-                                    Your stats
-                                  </div>
-                                </div>
-                                <span className="text-xs text-slate-600">→</span>
+                                <BarChart3 size={18} className="text-muted-foreground group-hover:text-primary" />
+                                <span className="text-sm font-medium">Dashboard</span>
                               </Link>
                             </motion.div>
                             <motion.div
@@ -409,21 +399,11 @@ export function NavBar() {
                             >
                               <Link
                                 to="/upload"
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500/30 to-blue-500/10 hover:from-blue-500/40 hover:to-blue-500/20 transition-all duration-200 font-semibold text-blue-300 group border border-blue-500/30"
+                                className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors duration-150 text-primary group border border-primary/20"
                                 onClick={closeMenu}
                               >
-                                <span className="text-2xl group-hover:scale-125 transition-transform duration-200">
-                                  🚀
-                                </span>
-                                <div className="flex-1">
-                                  <div className="text-sm font-bold">
-                                    Upload Asset
-                                  </div>
-                                  <div className="text-xs text-blue-400/70">
-                                    Create & share
-                                  </div>
-                                </div>
-                                <span className="text-xs text-slate-600">→</span>
+                                <FileUp size={18} className="text-primary" />
+                                <span className="text-sm font-semibold">Upload Asset</span>
                               </Link>
                             </motion.div>
                           </div>
