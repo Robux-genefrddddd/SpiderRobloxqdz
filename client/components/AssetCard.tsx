@@ -124,19 +124,18 @@ export function AssetCard({ asset }: AssetCardProps) {
 
             {/* Action Button */}
             <button
-              onClick={(e) => {
-                e.preventDefault();
-              }}
-              className={`w-full flex items-center justify-center gap-1.5 py-1.5 rounded-md font-medium transition-all duration-200 text-xs ${
+              onClick={isFree ? handleDownload : (e) => e.preventDefault()}
+              disabled={downloading && isFree}
+              className={`w-full flex items-center justify-center gap-1.5 py-1.5 rounded-md font-medium transition-all duration-200 text-xs disabled:opacity-50 ${
                 isFree
-                  ? "bg-secondary/30 border border-border/20 text-foreground/80 hover:bg-secondary/45 hover:border-border/30"
+                  ? "bg-secondary/30 border border-border/20 text-foreground/80 hover:bg-secondary/45 hover:border-border/30 disabled:hover:bg-secondary/30"
                   : "bg-accent/10 text-accent/90 border border-accent/15 hover:bg-accent/15 hover:border-accent/25"
               }`}
             >
               {isFree ? (
                 <>
                   <Download size={13} />
-                  Download
+                  {downloading ? "Downloading..." : "Download"}
                 </>
               ) : (
                 <>
