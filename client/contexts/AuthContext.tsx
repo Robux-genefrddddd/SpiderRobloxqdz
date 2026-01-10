@@ -35,16 +35,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (authUser) {
         // Fetch user profile from Firestore
         try {
-          // In a real implementation, fetch from Firestore
-          setUserProfile({
-            uid: authUser.uid,
-            username: authUser.displayName?.split(" ")[0] || "Creator",
-            email: authUser.email || "",
-            displayName: authUser.displayName || "User",
-            profileImage: authUser.photoURL || DEFAULT_PROFILE_IMAGE,
-            createdAt: new Date(),
-            memberRank: "starter",
-            role: "member",
+          const profileData = await onAuthChange((user) => {
+            if (user) {
+              // Use the imported function to get the real profile
+              import("@/lib/auth").then(({ getUserProfile }) => {
+                getUserProfile(authUser.uid).then((profile) => {
+                  if (profile) {
+                    setUserProfile(profile);
+                  } else {
+                    // Fallback if profile doesn't exist yet
+                    setUserProfile({
+                      uid: authUser.uid,
+                      username: authUser.displayName?.split(" ")[0] || "Creator",
+                      email: authUser.email || "",
+                      displayName: authUser.displayName || "User",
+                      profileImage: authUser.photoURL || DEFAULT_PROFILE_IMAGE,
+                      createdAt: new Date(),
+                      memberRank: "starter",
+                      role: "member",
+                    });
+                  }
+                });
+              });
+            }
           });
         } catch (error) {
           console.error("Error fetching user profile:", error);
