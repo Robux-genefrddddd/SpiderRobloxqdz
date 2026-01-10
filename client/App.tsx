@@ -47,6 +47,7 @@ const App = () => (
       <AuthProvider>
         <Toaster />
         <Sonner />
+        <WarningNotificationModal />
         <BrowserRouter>
           <Routes>
             <Route
