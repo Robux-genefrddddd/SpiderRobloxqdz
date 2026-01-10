@@ -40,17 +40,19 @@ export async function registerUser(
     );
     const user = userCredential.user;
 
-    // Update auth profile
+    // Update auth profile with default image
     await updateProfile(user, {
       displayName: displayName,
+      photoURL: DEFAULT_PROFILE_IMAGE,
     });
 
-    // Create Firestore profile
+    // Create Firestore profile with default image
     const userProfile: UserProfile = {
       uid: user.uid,
       username,
       email,
       displayName,
+      profileImage: DEFAULT_PROFILE_IMAGE,
       createdAt: new Date(),
       memberRank: "starter",
       assetsCreated: 0,
