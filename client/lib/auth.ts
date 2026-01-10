@@ -9,6 +9,10 @@ import {
 import { auth, db } from "./firebase";
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
+// Default profile image URL for all users
+export const DEFAULT_PROFILE_IMAGE =
+  "https://tr.rbxcdn.com/180DAY-bd2c1a5fc86fd014cbbbaaafdd777643/420/420/Hat/Webp/noFilter";
+
 export interface UserProfile {
   uid: string;
   username: string;
@@ -37,17 +41,19 @@ export async function registerUser(
     );
     const user = userCredential.user;
 
-    // Update auth profile
+    // Update auth profile with default image
     await updateProfile(user, {
       displayName: displayName,
+      photoURL: DEFAULT_PROFILE_IMAGE,
     });
 
-    // Create Firestore profile
+    // Create Firestore profile with default image
     const userProfile: UserProfile = {
       uid: user.uid,
       username,
       email,
       displayName,
+      profileImage: DEFAULT_PROFILE_IMAGE,
       createdAt: new Date(),
       memberRank: "starter",
       assetsCreated: 0,
