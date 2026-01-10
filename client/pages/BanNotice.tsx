@@ -217,17 +217,17 @@ export default function BanNotice() {
         <div className="space-y-3">
           <Button
             onClick={handleLogout}
-            className="w-full bg-gray-800 hover:bg-gray-700 text-white"
+            className="w-full bg-gray-700 hover:bg-gray-600 text-white border border-gray-600 transition-all duration-200"
           >
             <LogOut size={16} className="mr-2" />
-            Log Out
+            Logout
           </Button>
         </div>
 
         {/* Footer Info */}
-        <p className="text-center text-xs text-gray-500 px-4">
-          If you have questions about this action, please visit our support
-          page or contact our moderation team.
+        <p className="text-center text-xs text-gray-600 px-4 leading-relaxed">
+          If you have questions about this action or would like to appeal, please
+          contact our support team at support@example.com
         </p>
       </div>
     </div>
