@@ -2,13 +2,16 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Upload as UploadIcon,
-  TrendingUp,
   Download,
   DollarSign,
   Star,
   MoreVertical,
   LogOut,
   AlertTriangle,
+  Trash2,
+  Eye,
+  Edit3,
+  Copy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,11 +19,26 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useAuth } from "@/contexts/AuthContext";
-import { getUserAssets, Asset } from "@/lib/assetService";
+import {
+  getUserAssets,
+  Asset,
+  deleteAsset,
+  updateAsset,
+} from "@/lib/assetService";
 import { logoutUser } from "@/lib/auth";
 import { WarningsSection } from "@/components/WarningsSection";
+import { toast } from "sonner";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<
@@ -30,6 +48,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const { userProfile, isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -37,7 +56,6 @@ export default function Dashboard() {
       return;
     }
 
-    // Fetch user's assets from Firebase
     const fetchAssets = async () => {
       if (user?.uid) {
         const userAssets = await getUserAssets(user.uid);
@@ -58,20 +76,47 @@ export default function Dashboard() {
     }
   };
 
-  // Calculate stats from real assets
+  const handleDeleteAsset = async (assetId: string) => {
+    if (!user?.uid) return;
+    try {
+      await deleteAsset(assetId, user.uid);
+      setAssets(assets.filter((a) => a.id !== assetId));
+      setDeleteConfirm(null);
+      toast.success("Asset deleted");
+    } catch (error) {
+      toast.error("Failed to delete asset");
+      console.error(error);
+    }
+  };
+
+  const handleTogglePublish = async (asset: Asset) => {
+    try {
+      const newStatus =
+        asset.status === "published" ? "draft" : "published";
+      await updateAsset(asset.id, { status: newStatus });
+
+      setAssets(
+        assets.map((a) =>
+          a.id === asset.id ? { ...a, status: newStatus } : a,
+        ),
+      );
+      toast.success(
+        newStatus === "published" ? "Asset published" : "Asset unpublished",
+      );
+    } catch (error) {
+      toast.error("Failed to update asset");
+      console.error(error);
+    }
+  };
+
   const stats = {
     totalEarnings: assets.reduce(
       (sum, asset) => sum + (asset.price || 0) * asset.downloads,
       0,
     ),
     totalDownloads: assets.reduce((sum, asset) => sum + asset.downloads, 0),
-    totalAssets: assets.length,
-    avgRating:
-      assets.length > 0
-        ? (
-            assets.reduce((sum, asset) => sum + asset.rating, 0) / assets.length
-          ).toFixed(2)
-        : 0,
+    publishedCount: assets.filter((a) => a.status === "published").length,
+    draftCount: assets.filter((a) => a.status === "draft").length,
   };
 
   if (!isAuthenticated) {
@@ -82,8 +127,8 @@ export default function Dashboard() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto"></div>
-          <p className="text-muted-foreground">Loading your dashboard...</p>
+          <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto" />
+          <p className="text-sm text-muted-foreground">Loading...</p>
         </div>
       </div>
     );
@@ -91,14 +136,13 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-6 py-10 md:py-12">
+      <div className="container mx-auto px-4 py-8 md:py-10 max-w-6xl">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
-            <p className="text-sm text-muted-foreground/80">
-              Welcome back, {userProfile?.displayName || "Creator"}! Manage your
-              assets and track your success.
+            <h1 className="text-2xl font-bold mb-1">Dashboard</h1>
+            <p className="text-xs text-muted-foreground">
+              {userProfile?.displayName || "Creator"}
             </p>
           </div>
           <Link to="/upload">
@@ -109,8 +153,8 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-4 mb-8 border-b border-white/5 overflow-x-auto">
+        {/* Navigation Tabs */}
+        <div className="flex gap-6 mb-8 border-b border-border/50 -mx-4 px-4">
           {[
             { id: "overview", label: "Overview" },
             { id: "assets", label: "My Assets" },
@@ -119,10 +163,10 @@ export default function Dashboard() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`pb-4 px-1 text-sm font-medium transition-all duration-200 flex items-center gap-2 whitespace-nowrap ${
+              className={`pb-3 text-sm font-medium transition-colors duration-200 flex items-center gap-2 whitespace-nowrap border-b-2 -mb-px ${
                 activeTab === tab.id
-                  ? "border-b-2 border-primary text-foreground"
-                  : "text-muted-foreground/80 hover:text-foreground"
+                  ? "border-primary text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
               {tab.icon && <tab.icon size={16} />}
@@ -133,119 +177,59 @@ export default function Dashboard() {
 
         {/* Overview Tab */}
         {activeTab === "overview" && (
-          <div className="space-y-8">
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="border border-white/5 rounded-lg p-4 space-y-2 bg-white/2 hover:border-white/10 transition-all duration-200">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-medium text-muted-foreground">
-                    Total Earnings
-                  </h3>
-                  <div className="w-6 h-6 rounded-lg bg-green-500/20 text-green-400 flex items-center justify-center">
-                    <DollarSign size={14} />
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-foreground">
-                    ${stats.totalEarnings.toFixed(2)}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    From assets
-                  </p>
-                </div>
+          <div className="space-y-6">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="border border-border/60 rounded-lg p-3 bg-card/50">
+                <p className="text-xs text-muted-foreground mb-1">
+                  Total Earnings
+                </p>
+                <p className="text-lg font-semibold">
+                  ${stats.totalEarnings.toFixed(0)}
+                </p>
               </div>
-
-              <div className="bg-secondary/50 border border-border rounded-lg p-3 space-y-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-medium text-muted-foreground">
-                    Total Downloads
-                  </h3>
-                  <div className="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center">
-                    <Download size={14} />
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-foreground">
-                    {stats.totalDownloads.toLocaleString()}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Downloads
-                  </p>
-                </div>
+              <div className="border border-border/60 rounded-lg p-3 bg-card/50">
+                <p className="text-xs text-muted-foreground mb-1">
+                  Total Downloads
+                </p>
+                <p className="text-lg font-semibold">
+                  {stats.totalDownloads.toLocaleString()}
+                </p>
               </div>
-
-              <div className="bg-secondary/50 border border-border rounded-lg p-3 space-y-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-medium text-muted-foreground">
-                    Published Assets
-                  </h3>
-                  <div className="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
-                    <TrendingUp size={14} />
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-foreground">
-                    {stats.totalAssets}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Published
-                  </p>
-                </div>
+              <div className="border border-border/60 rounded-lg p-3 bg-card/50">
+                <p className="text-xs text-muted-foreground mb-1">
+                  Published Assets
+                </p>
+                <p className="text-lg font-semibold">{stats.publishedCount}</p>
               </div>
-
-              <div className="bg-secondary/50 border border-border rounded-lg p-3 space-y-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-medium text-muted-foreground">
-                    Avg. Rating
-                  </h3>
-                  <div className="w-6 h-6 rounded-lg bg-yellow-500/20 text-yellow-400 flex items-center justify-center">
-                    <Star size={14} />
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-foreground">
-                    {stats.avgRating}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Rating</p>
-                </div>
+              <div className="border border-border/60 rounded-lg p-3 bg-card/50">
+                <p className="text-xs text-muted-foreground mb-1">
+                  Draft Assets
+                </p>
+                <p className="text-lg font-semibold">{stats.draftCount}</p>
               </div>
             </div>
 
             {/* Recent Assets */}
-            <div className="bg-secondary/30 border border-border rounded-lg p-3">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-xs text-foreground">
-                  {assets.length === 0 ? "No Assets Yet" : "Your Recent Assets"}
-                </h3>
-              </div>
-
-              {assets.length === 0 ? (
-                <div className="text-center py-6 space-y-2">
-                  <p className="text-xs text-muted-foreground">
-                    You haven't uploaded any assets yet.
-                  </p>
-                  <Link to="/upload">
-                    <Button size="sm" className="text-xs">
-                      <UploadIcon size={12} className="mr-1" />
-                      Upload Asset
-                    </Button>
-                  </Link>
+            {assets.length > 0 && (
+              <div className="border border-border/50 rounded-lg overflow-hidden">
+                <div className="px-4 py-3 border-b border-border/50 bg-card/50">
+                  <h3 className="text-sm font-semibold">Recent Assets</h3>
                 </div>
-              ) : (
-                <div className="space-y-1.5">
+                <div className="divide-y divide-border/50">
                   {assets.slice(0, 5).map((asset) => (
                     <div
                       key={asset.id}
-                      className="flex items-center justify-between p-2 bg-secondary/50 rounded-lg hover:bg-secondary/70 transition-colors"
+                      className="px-4 py-3 flex items-center justify-between gap-4 hover:bg-card/30 transition-colors"
                     >
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
                         <img
                           src={asset.imageUrl}
                           alt={asset.name}
-                          className="w-8 h-8 rounded object-cover"
+                          className="w-8 h-8 rounded object-cover flex-shrink-0"
                         />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-medium text-foreground truncate">
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-medium truncate">
                             {asset.name}
                           </p>
                           <p className="text-xs text-muted-foreground">
@@ -253,158 +237,207 @@ export default function Dashboard() {
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <div className="text-right">
-                          <p className="text-xs font-medium text-foreground">
-                            {asset.downloads}
-                          </p>
+                      <div className="flex items-center gap-4 text-right text-sm">
+                        <div>
+                          <p className="font-medium">{asset.downloads}</p>
                           <p className="text-xs text-muted-foreground">
-                            ${(asset.price || 0).toFixed(2)}
+                            downloads
                           </p>
                         </div>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <button className="p-1 hover:bg-secondary rounded transition-colors">
-                              <MoreVertical size={12} />
-                            </button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem asChild>
-                              <Link to={`/asset/${asset.id}`}>View Asset</Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem disabled>
-                              Edit (Coming Soon)
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <div>
+                          <span
+                            className={`inline-block px-2 py-1 rounded text-xs font-medium ${
+                              asset.status === "published"
+                                ? "bg-green-500/20 text-green-400"
+                                : asset.status === "draft"
+                                  ? "bg-gray-500/20 text-gray-400"
+                                  : "bg-yellow-500/20 text-yellow-400"
+                            }`}
+                          >
+                            {asset.status === "published"
+                              ? "Published"
+                              : asset.status === "draft"
+                                ? "Draft"
+                                : "Verifying"}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   ))}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
+
+            {assets.length === 0 && (
+              <div className="border border-border/50 rounded-lg p-8 text-center">
+                <p className="text-sm text-muted-foreground mb-4">
+                  No assets uploaded yet
+                </p>
+                <Link to="/upload">
+                  <Button size="sm" variant="outline">
+                    <UploadIcon size={16} className="mr-2" />
+                    Upload First Asset
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         )}
 
-        {/* Assets Tab */}
+        {/* My Assets Tab */}
         {activeTab === "assets" && (
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="flex justify-between items-center">
               <p className="text-xs text-muted-foreground">
-                {assets.length} published{" "}
-                {assets.length === 1 ? "asset" : "assets"}
+                {assets.length} {assets.length === 1 ? "asset" : "assets"}
               </p>
               <Link to="/upload">
-                <Button size="sm" className="text-xs">
-                  <UploadIcon size={12} />
-                  New
+                <Button size="sm" className="gap-2">
+                  <UploadIcon size={14} />
+                  New Asset
                 </Button>
               </Link>
             </div>
 
             {assets.length === 0 ? (
-              <div className="bg-secondary/30 border border-border rounded-lg p-6 text-center space-y-2">
-                <p className="text-xs text-muted-foreground">
-                  You haven't uploaded any assets yet.
+              <div className="border border-border/50 rounded-lg p-8 text-center">
+                <p className="text-sm text-muted-foreground mb-4">
+                  No assets uploaded yet
                 </p>
                 <Link to="/upload">
-                  <Button size="sm" className="text-xs">
-                    <UploadIcon size={12} className="mr-1" />
+                  <Button size="sm" variant="outline">
+                    <UploadIcon size={16} className="mr-2" />
                     Upload Asset
                   </Button>
                 </Link>
               </div>
             ) : (
-              <div className="grid gap-3">
-                {assets.map((asset) => (
-                  <div
-                    key={asset.id}
-                    className="bg-secondary/30 border border-border rounded-lg p-3 hover:border-border/80 transition-all"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-start gap-2 flex-1">
-                        <img
-                          src={asset.imageUrl}
-                          alt={asset.name}
-                          className="w-12 h-12 rounded object-cover flex-shrink-0"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-sm font-semibold text-foreground">
-                            {asset.name}
-                          </h3>
-                          <p className="text-xs text-muted-foreground">
-                            {asset.category}
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
-                            {asset.description}
-                          </p>
-                          <div className="flex gap-3 mt-1 text-xs">
-                            <div>
-                              <p className="text-muted-foreground">Downloads</p>
-                              <p className="font-semibold text-foreground">
-                                {asset.downloads}
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-muted-foreground">Price</p>
-                              <p className="font-semibold text-foreground">
-                                ${(asset.price || 0).toFixed(2)}
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-muted-foreground">Rating</p>
-                              <p className="font-semibold text-foreground">
-                                {asset.rating}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col gap-2 flex-shrink-0">
-                        <span
-                          className={`px-2 py-1 text-xs font-medium rounded whitespace-nowrap ${
-                            asset.status === "published"
-                              ? "bg-green-500/20 text-green-400"
-                              : asset.status === "verification"
-                                ? "bg-yellow-500/20 text-yellow-400"
-                                : asset.status === "uploading"
-                                  ? "bg-blue-500/20 text-blue-400"
-                                  : "bg-gray-500/20 text-gray-400"
-                          }`}
+              <div className="border border-border/50 rounded-lg overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border/50 bg-card/50">
+                        <th className="px-4 py-3 text-left font-semibold text-xs">
+                          Asset
+                        </th>
+                        <th className="px-4 py-3 text-left font-semibold text-xs">
+                          Category
+                        </th>
+                        <th className="px-4 py-3 text-left font-semibold text-xs">
+                          Status
+                        </th>
+                        <th className="px-4 py-3 text-right font-semibold text-xs">
+                          Downloads
+                        </th>
+                        <th className="px-4 py-3 text-right font-semibold text-xs">
+                          Earnings
+                        </th>
+                        <th className="px-4 py-3 text-right font-semibold text-xs w-12">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {assets.map((asset) => (
+                        <tr
+                          key={asset.id}
+                          className="border-b border-border/50 hover:bg-card/30 transition-colors"
                         >
-                          {asset.status === "published"
-                            ? "Published"
-                            : asset.status === "verification"
-                              ? "Verifying"
-                              : asset.status === "uploading"
-                                ? "Uploading"
-                                : "Draft"}
-                        </span>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-xs"
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-3">
+                              <img
+                                src={asset.imageUrl}
+                                alt={asset.name}
+                                className="w-8 h-8 rounded object-cover"
+                              />
+                              <div className="min-w-0">
+                                <p className="font-medium truncate">
+                                  {asset.name}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  {asset.downloads} {asset.downloads === 1 ? "download" : "downloads"}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 text-muted-foreground">
+                            {asset.category}
+                          </td>
+                          <td className="px-4 py-3">
+                            <span
+                              className={`inline-block px-2 py-1 rounded text-xs font-medium ${
+                                asset.status === "published"
+                                  ? "bg-green-500/20 text-green-400"
+                                  : asset.status === "draft"
+                                    ? "bg-gray-500/20 text-gray-400"
+                                    : asset.status === "verification"
+                                      ? "bg-yellow-500/20 text-yellow-400"
+                                      : "bg-blue-500/20 text-blue-400"
+                              }`}
                             >
-                              Actions
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuItem asChild>
-                              <Link to={`/asset/${asset.id}`}>
-                                View Details
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem disabled>
-                              Edit (Coming Soon)
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                              {asset.status === "published"
+                                ? "Published"
+                                : asset.status === "draft"
+                                  ? "Draft"
+                                  : asset.status === "verification"
+                                    ? "Verifying"
+                                    : "Uploading"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-right">
+                            {asset.downloads}
+                          </td>
+                          <td className="px-4 py-3 text-right font-medium">
+                            ${((asset.price || 0) * asset.downloads).toFixed(0)}
+                          </td>
+                          <td className="px-4 py-3 text-right">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <button className="p-1 hover:bg-card rounded transition-colors inline-flex">
+                                  <MoreVertical size={16} />
+                                </button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="w-44">
+                                <DropdownMenuItem asChild>
+                                  <Link to={`/asset/${asset.id}`}>
+                                    <Eye size={14} className="mr-2" />
+                                    View
+                                  </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem disabled>
+                                  <Edit3 size={14} className="mr-2" />
+                                  Edit (Coming Soon)
+                                </DropdownMenuItem>
+                                <DropdownMenuItem disabled>
+                                  <Copy size={14} className="mr-2" />
+                                  Update File (Coming Soon)
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  onClick={() => handleTogglePublish(asset)}
+                                >
+                                  {asset.status === "published" ? (
+                                    <>Unpublish</>
+                                  ) : (
+                                    <>Publish</>
+                                  )}
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  onClick={() => setDeleteConfirm(asset.id)}
+                                  className="text-destructive"
+                                >
+                                  <Trash2 size={14} className="mr-2" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </div>
@@ -412,35 +445,46 @@ export default function Dashboard() {
 
         {/* Warnings Tab */}
         {activeTab === "warnings" && (
-          <div className="space-y-3">
-            <div className="bg-secondary/30 border border-border rounded-lg p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <AlertTriangle size={18} className="text-yellow-400" />
-                <div>
-                  <h3 className="font-semibold text-xs text-foreground">
-                    Your Warnings & Bans
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    View your account status and any active warnings
-                  </p>
-                </div>
-              </div>
-              {user && <WarningsSection userId={user.uid} canDelete={false} />}
-            </div>
+          <div>
+            {user && <WarningsSection userId={user.uid} canDelete={false} />}
           </div>
         )}
 
-        {/* Logout Button */}
-        <div className="mt-6 pt-4 border-t border-border">
+        {/* Sign Out */}
+        <div className="mt-8 pt-6 border-t border-border/50">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-lg transition-colors font-medium"
+            className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-card/50 rounded transition-colors font-medium"
           >
-            <LogOut size={14} />
+            <LogOut size={16} />
             Sign Out
           </button>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog
+        open={deleteConfirm !== null}
+        onOpenChange={() => setDeleteConfirm(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogTitle>Delete Asset</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. The asset will be permanently deleted.
+          </AlertDialogDescription>
+          <div className="flex gap-3 justify-end">
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() =>
+                deleteConfirm && handleDeleteAsset(deleteConfirm)
+              }
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
