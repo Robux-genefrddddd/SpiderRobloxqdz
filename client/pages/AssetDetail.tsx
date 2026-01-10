@@ -58,10 +58,10 @@ export default function AssetDetail() {
         </div>
 
         {/* Description */}
-        <div className="bg-card border border-border rounded-lg p-8 space-y-6">
+        <div className="bg-secondary/15 border border-border/15 rounded-lg p-5 space-y-4">
           <div>
-            <h2 className="text-2xl font-bold mb-4">About This Asset</h2>
-            <p className="text-muted-foreground leading-relaxed">
+            <h2 className="text-lg font-bold mb-2.5">About This Asset</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               This is a comprehensive UI kit designed for modern web and mobile
               applications. It includes components, patterns, and design
               guidelines.
@@ -69,8 +69,8 @@ export default function AssetDetail() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-3">What's Included</h3>
-            <ul className="space-y-2 text-muted-foreground">
+            <h3 className="font-semibold mb-2 text-sm">What's Included</h3>
+            <ul className="space-y-1.5 text-sm text-muted-foreground">
               <li>• 200+ UI Components</li>
               <li>• Design System Documentation</li>
               <li>• Color Palette & Typography</li>
@@ -80,25 +80,25 @@ export default function AssetDetail() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-3">Creator</h3>
-            <div className="flex items-center gap-3">
+            <h3 className="font-semibold mb-2.5 text-sm">Creator</h3>
+            <div className="flex items-center gap-2">
               <img
                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop"
                 alt="Author"
-                className="w-10 h-10 rounded-full"
+                className="w-8 h-8 rounded-md object-cover"
               />
               <div>
-                <p className="font-semibold">Design Pro</p>
-                <p className="text-sm text-muted-foreground">UI/UX Designer</p>
+                <p className="font-medium text-sm">Design Pro</p>
+                <p className="text-xs text-muted-foreground">UI/UX Designer</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Related Assets - Placeholder */}
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-8">More from Creator</h2>
-          <p className="text-muted-foreground">
+        <div className="mt-10">
+          <h2 className="text-lg font-bold mb-4">More from Creator</h2>
+          <p className="text-sm text-muted-foreground">
             Related assets will be displayed here
           </p>
         </div>
