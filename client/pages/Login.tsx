@@ -1,16 +1,28 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Mail, Lock, ArrowRight } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Mail, Lock, ArrowRight, AlertCircle } from "lucide-react";
+import { loginUser } from "@/lib/auth";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1000);
+
+    try {
+      await loginUser(email, password);
+      navigate("/dashboard");
+    } catch (err: any) {
+      setError(err.message || "Failed to sign in. Please check your credentials.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
