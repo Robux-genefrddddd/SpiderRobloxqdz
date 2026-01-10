@@ -107,7 +107,7 @@ export default function Marketplace() {
           <aside
             className={`${
               mobileFiltersOpen ? "block" : "hidden"
-            } md:block w-full md:w-64 flex-shrink-0`}
+            } md:block w-full md:w-48 flex-shrink-0`}
           >
             <div className="bg-secondary/30 border border-border rounded-lg p-6 space-y-6 sticky top-24">
               {/* Category Filter */}
