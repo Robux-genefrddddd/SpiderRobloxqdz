@@ -35,7 +35,7 @@ export interface Asset {
   downloads: number;
   rating: number;
   reviews: number;
-  status: "draft" | "published" | "archived";
+  status: "draft" | "uploading" | "verification" | "published" | "archived" | "rejected";
   tags: string[];
   createdAt: Date;
   updatedAt: Date;
