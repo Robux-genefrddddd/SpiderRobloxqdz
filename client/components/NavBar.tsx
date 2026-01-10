@@ -112,7 +112,7 @@ export function NavBar() {
 
           {/* Auth Section */}
           <div className="flex items-center gap-3">
-            {isAuthenticated && userProfile && !loading ? (
+            {isAuthenticated && userProfile ? (
               <div className="hidden sm:flex items-center gap-3">
                 {/* User Profile Badge */}
                 <DropdownMenu>
