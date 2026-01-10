@@ -18,10 +18,17 @@ import type { Asset } from "@/lib/assetService";
 
 export default function AssetDetail() {
   const { id } = useParams<{ id: string }>();
+  const { user, userProfile } = useAuth();
   const [asset, setAsset] = useState<Asset | null>(null);
   const [authorProfile, setAuthorProfile] = useState<any>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [userReview, setUserReview] = useState<Review | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [rating, setRating] = useState(5);
+  const [reviewMessage, setReviewMessage] = useState("");
+  const [hoveredRating, setHoveredRating] = useState(0);
 
   useEffect(() => {
     const fetchAssetDetails = async () => {
@@ -41,6 +48,16 @@ export default function AssetDetail() {
         // Fetch author profile
         const author = await getUserProfile(assetData.authorId);
         setAuthorProfile(author);
+
+        // Fetch reviews
+        const assetReviews = await getAssetReviews(id);
+        setReviews(assetReviews);
+
+        // Fetch user's review if authenticated
+        if (user) {
+          const existing = await getUserReviewForAsset(id, user.uid);
+          setUserReview(existing);
+        }
       } catch (err) {
         console.error("Error loading asset:", err);
         setError("Failed to load asset details");
@@ -50,7 +67,7 @@ export default function AssetDetail() {
     };
 
     fetchAssetDetails();
-  }, [id]);
+  }, [id, user]);
 
   if (loading) {
     return (
