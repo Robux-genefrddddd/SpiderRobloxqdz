@@ -63,7 +63,7 @@ export default function AdminPanel() {
   const [updatingMaintenance, setUpdatingMaintenance] = useState(false);
   const [showMaintenanceModal, setShowMaintenanceModal] = useState(false);
 
-  // Check authorization
+  // Check authorization and load maintenance status
   useEffect(() => {
     if (!user || !userProfile) {
       navigate("/login");
@@ -76,6 +76,14 @@ export default function AdminPanel() {
     }
 
     loadData();
+
+    // Subscribe to maintenance status (real-time updates)
+    const unsubscribe = subscribeToMaintenanceStatus((status) => {
+      setMaintenanceStatus(status);
+      setMaintenanceMessage(status.message || "");
+    });
+
+    return unsubscribe;
   }, [user, userProfile, navigate]);
 
   const loadData = async () => {
