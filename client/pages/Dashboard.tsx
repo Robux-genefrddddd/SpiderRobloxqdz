@@ -141,82 +141,82 @@ export default function Dashboard() {
                   <h3 className="text-xs font-medium text-muted-foreground">
                     Total Earnings
                   </h3>
-                  <div className="w-8 h-8 rounded-lg bg-green-500/20 text-green-400 flex items-center justify-center">
-                    <DollarSign size={16} />
+                  <div className="w-6 h-6 rounded-lg bg-green-500/20 text-green-400 flex items-center justify-center">
+                    <DollarSign size={14} />
                   </div>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-xl font-bold text-foreground">
                     ${stats.totalEarnings.toFixed(2)}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    From your published assets
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    From assets
                   </p>
                 </div>
               </div>
 
-              <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-2">
+              <div className="bg-secondary/50 border border-border rounded-lg p-3 space-y-1">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-medium text-muted-foreground">
                     Total Downloads
                   </h3>
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center">
-                    <Download size={16} />
+                  <div className="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center">
+                    <Download size={14} />
                   </div>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-xl font-bold text-foreground">
                     {stats.totalDownloads.toLocaleString()}
                   </p>
-                  <p className="text-xs text-blue-400 mt-1">
-                    Total asset downloads
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Downloads
                   </p>
                 </div>
               </div>
 
-              <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-2">
+              <div className="bg-secondary/50 border border-border rounded-lg p-3 space-y-1">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-medium text-muted-foreground">
                     Published Assets
                   </h3>
-                  <div className="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
-                    <TrendingUp size={16} />
+                  <div className="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
+                    <TrendingUp size={14} />
                   </div>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-xl font-bold text-foreground">
                     {stats.totalAssets}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Active on marketplace
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Published
                   </p>
                 </div>
               </div>
 
-              <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-2">
+              <div className="bg-secondary/50 border border-border rounded-lg p-3 space-y-1">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-medium text-muted-foreground">
                     Avg. Rating
                   </h3>
-                  <div className="w-8 h-8 rounded-lg bg-yellow-500/20 text-yellow-400 flex items-center justify-center">
-                    <Star size={16} />
+                  <div className="w-6 h-6 rounded-lg bg-yellow-500/20 text-yellow-400 flex items-center justify-center">
+                    <Star size={14} />
                   </div>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-foreground">
+                  <p className="text-xl font-bold text-foreground">
                     {stats.avgRating}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Average from reviews
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Rating
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Recent Assets */}
-            <div className="bg-secondary/30 border border-border rounded-lg p-4">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-sm text-foreground">
+            <div className="bg-secondary/30 border border-border rounded-lg p-3">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-xs text-foreground">
                   {assets.length === 0 ? "No Assets Yet" : "Your Recent Assets"}
                 </h3>
               </div>
