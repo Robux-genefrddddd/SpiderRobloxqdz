@@ -387,19 +387,21 @@ export async function getUserGroupInvites(
     const q = query(
       collection(db, GROUP_INVITES_COLLECTION),
       where("inviteeId", "==", userId),
-      where("status", "==", "pending"),
     );
     const querySnapshot = await getDocs(q);
 
-    const invites = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-      invitationDate: doc.data().invitationDate?.toDate?.() || new Date(),
-    })) as GroupInvite[];
+    const invites = querySnapshot.docs
+      .map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+        invitationDate: doc.data().invitationDate?.toDate?.() || new Date(),
+      }))
+      .filter((invite) => invite.status === "pending") // Filter on client side
+      .sort(
+        (a, b) => b.invitationDate.getTime() - a.invitationDate.getTime(),
+      ) as GroupInvite[];
 
-    return invites.sort(
-      (a, b) => b.invitationDate.getTime() - a.invitationDate.getTime(),
-    );
+    return invites;
   } catch (error) {
     console.error("Error fetching user group invites:", error);
     return [];
