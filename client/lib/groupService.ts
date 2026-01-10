@@ -441,7 +441,7 @@ export async function acceptGroupInvite(
     const newMember: GroupMember = {
       userId,
       username,
-      avatar,
+      avatar: avatar || null,
       role: "member",
       joinedAt: new Date(),
       isActive: true,
