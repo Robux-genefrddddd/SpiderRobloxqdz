@@ -87,26 +87,26 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-12 md:py-16">
+      <div className="container mx-auto px-4 py-6 md:py-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-2">Dashboard</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl md:text-3xl font-bold mb-1">Dashboard</h1>
+            <p className="text-sm text-muted-foreground">
               Welcome back, {userProfile?.displayName || "Creator"}! Manage your
               assets and track your success.
             </p>
           </div>
           <Link to="/upload">
-            <Button className="gap-2">
-              <UploadIcon size={20} />
+            <Button size="sm" className="gap-2">
+              <UploadIcon size={18} />
               Upload Asset
             </Button>
           </Link>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-8 border-b border-border">
+        <div className="flex gap-4 mb-6 border-b border-border">
           {[
             { id: "overview", label: "Overview" },
             { id: "assets", label: "My Assets" },
@@ -114,7 +114,7 @@ export default function Dashboard() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`pb-4 px-2 font-medium transition-colors ${
+              className={`pb-3 px-2 text-sm font-medium transition-colors ${
                 activeTab === tab.id
                   ? "border-b-2 border-primary text-foreground"
                   : "text-muted-foreground hover:text-foreground"
