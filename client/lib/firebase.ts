@@ -20,10 +20,17 @@ const app = initializeApp(firebaseConfig);
 // Initialize services
 export const auth = getAuth(app);
 
-// Enable persistence so auth state is maintained on page refresh
-setPersistence(auth, browserLocalPersistence).catch((error) => {
-  console.error("Failed to enable persistence:", error);
-});
+// Enable persistence with LOCAL so auth state is maintained on page refresh
+auth.setPersistence = async () => {
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+  } catch (error) {
+    console.error("Failed to enable persistence:", error);
+  }
+};
+
+// Initialize persistence immediately
+auth.setPersistence();
 
 export const db = getFirestore(app);
 export const storage = getStorage(app);
