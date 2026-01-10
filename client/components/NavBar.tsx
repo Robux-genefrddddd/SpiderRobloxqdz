@@ -227,11 +227,11 @@ export function NavBar() {
         <>
           {/* Overlay */}
           <div
-            className="fixed inset-0 top-14 bg-black/50 z-30 lg:hidden"
+            className="fixed inset-0 top-14 bg-black/50 z-40 lg:hidden"
             onClick={() => setMenuOpen(false)}
           />
           {/* Menu Panel */}
-          <div className="fixed left-0 top-14 bottom-0 w-64 bg-background border-r border-border/20 overflow-y-auto z-40 shadow-xl">
+          <div className="fixed left-0 top-14 bottom-0 w-64 bg-background border-r border-border/20 overflow-y-auto z-50 shadow-xl">
             <div className="flex flex-col h-full">
               {/* Menu Header */}
               <div className="px-4 py-3 border-b border-border/20 flex-shrink-0">
