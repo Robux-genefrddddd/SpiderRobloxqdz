@@ -30,6 +30,8 @@ import Support from "./pages/Support";
 import SupportNewTicket from "./pages/SupportNewTicket";
 import SupportTicketDetail from "./pages/SupportTicketDetail";
 import NotFound from "./pages/NotFound";
+import Groups from "./pages/Groups";
+import GroupDetail from "./pages/GroupDetail";
 
 const queryClient = new QueryClient();
 
