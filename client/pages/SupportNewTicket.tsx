@@ -254,7 +254,7 @@ export default function SupportNewTicket() {
             className="w-full flex items-center justify-between p-3 hover:bg-secondary/30 rounded-lg transition-colors text-left"
           >
             <span className="text-xs font-semibold uppercase text-muted-foreground">
-              💡 Tips for faster resolution
+              Tips for faster resolution
             </span>
             <ChevronDown
               size={14}
