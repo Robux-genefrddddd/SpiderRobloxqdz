@@ -233,11 +233,11 @@ export default function Marketplace() {
   return (
     <div className="min-h-screen bg-background">
       {/* Page Header */}
-      <section className="border-b border-border py-12 md:py-16">
+      <section className="border-b border-border/50 py-10 md:py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Marketplace</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Explore thousands of premium digital assets. Find the perfect resources for your next project.
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">Marketplace</h1>
+          <p className="text-sm text-muted-foreground max-w-2xl">
+            Browse thousands of assets created by our community. Filter by type, category, or price.
           </p>
         </div>
       </section>
