@@ -124,13 +124,29 @@ export function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-border/40 my-8" />
+        <div className="border-t border-border/20 my-8" />
 
         {/* Bottom Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-muted-foreground">
-            © {currentYear} AssetHub. All rights reserved.
-          </p>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+            <p className="text-xs text-muted-foreground">
+              © {currentYear} AssetHub. All rights reserved.
+            </p>
+            {/* Roblox Logo */}
+            <a
+              href="https://roblox.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center opacity-60 hover:opacity-100 transition-opacity"
+              aria-label="Roblox"
+            >
+              <img
+                src="https://www.freepnglogos.com/uploads/roblox/roblox-logo-roblox-symbol-meaning-history-and-evolution-3.jpg"
+                alt="Roblox"
+                className="h-5 object-contain"
+              />
+            </a>
+          </div>
 
           {/* Social Links */}
           <div className="flex items-center gap-3">
@@ -138,7 +154,7 @@ export function Footer() {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-1.5 rounded-sm hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+              className="p-2 rounded-lg hover:bg-secondary/40 transition-colors text-muted-foreground hover:text-foreground"
               aria-label="GitHub"
             >
               <Github size={16} />
@@ -147,14 +163,14 @@ export function Footer() {
               href="https://linkedin.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-1.5 rounded-sm hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+              className="p-2 rounded-lg hover:bg-secondary/40 transition-colors text-muted-foreground hover:text-foreground"
               aria-label="LinkedIn"
             >
               <Linkedin size={16} />
             </a>
             <a
               href="mailto:contact@assethub.com"
-              className="p-1.5 rounded-sm hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+              className="p-2 rounded-lg hover:bg-secondary/40 transition-colors text-muted-foreground hover:text-foreground"
               aria-label="Email"
             >
               <Mail size={16} />
