@@ -125,22 +125,22 @@ export default function Marketplace() {
           <aside
             className={`${
               mobileFiltersOpen ? "block" : "hidden"
-            } md:block w-full md:w-[190px] flex-shrink-0`}
+            } md:block w-full md:w-[200px] flex-shrink-0`}
           >
-            <div className="sticky top-24 space-y-6">
+            <div className="sticky top-20 space-y-8">
               {/* Category Filter */}
               <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 px-1">
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/80 mb-4">
                   Category
                 </h3>
-                <div className="space-y-1">
+                <div className="space-y-2">
                   {/* All Categories */}
                   <button
                     onClick={() => setSelectedCategory(undefined)}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-all duration-150 border-l-2 ${
+                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-150 border-l-2 ${
                       !selectedCategory
-                        ? "border-l-primary text-foreground bg-transparent hover:bg-white/5"
-                        : "border-l-transparent text-muted-foreground hover:text-foreground hover:bg-white/5"
+                        ? "border-l-primary text-foreground bg-white/5 hover:bg-white/8"
+                        : "border-l-transparent text-muted-foreground/80 hover:text-foreground hover:bg-white/5"
                     }`}
                   >
                     <LayoutGrid size={16} className="flex-shrink-0" />
@@ -152,10 +152,10 @@ export default function Marketplace() {
                     <button
                       key={name}
                       onClick={() => setSelectedCategory(name)}
-                      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-all duration-150 border-l-2 ${
+                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-150 border-l-2 ${
                         selectedCategory === name
-                          ? "border-l-primary text-foreground bg-transparent hover:bg-white/5"
-                          : "border-l-transparent text-muted-foreground hover:text-foreground hover:bg-white/5"
+                          ? "border-l-primary text-foreground bg-white/5 hover:bg-white/8"
+                          : "border-l-transparent text-muted-foreground/80 hover:text-foreground hover:bg-white/5"
                       }`}
                     >
                       <Icon size={16} className="flex-shrink-0" />
@@ -167,11 +167,11 @@ export default function Marketplace() {
 
               {/* Sort Filter */}
               <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 px-1">
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/80 mb-4">
                   Sort By
                 </h3>
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="bg-[#1e1e1e] border-white/8 hover:border-white/15">
+                  <SelectTrigger className="bg-white/5 border-white/10 hover:border-white/15">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -187,7 +187,7 @@ export default function Marketplace() {
               {/* Close Mobile Filters */}
               <button
                 onClick={() => setMobileFiltersOpen(false)}
-                className="md:hidden w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium"
+                className="md:hidden w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium text-sm"
               >
                 Done
               </button>
