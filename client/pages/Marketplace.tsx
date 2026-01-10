@@ -107,34 +107,41 @@ export default function Marketplace() {
           <aside
             className={`${
               mobileFiltersOpen ? "block" : "hidden"
-            } md:block w-full md:w-48 flex-shrink-0`}
+            } md:block w-full md:w-[190px] flex-shrink-0`}
           >
-            <div className="bg-secondary/30 border border-border rounded-lg p-6 space-y-6 sticky top-24">
+            <div className="sticky top-24 space-y-6">
               {/* Category Filter */}
               <div>
-                <h3 className="font-semibold text-foreground mb-4">Category</h3>
-                <div className="space-y-2">
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 px-1">
+                  Category
+                </h3>
+                <div className="space-y-1">
+                  {/* All Categories */}
                   <button
                     onClick={() => setSelectedCategory(undefined)}
-                    className={`block w-full text-left px-3 py-2 rounded transition-colors ${
+                    className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-all duration-150 border-l-2 ${
                       !selectedCategory
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                        ? "border-l-primary text-foreground bg-transparent hover:bg-white/5"
+                        : "border-l-transparent text-muted-foreground hover:text-foreground hover:bg-white/5"
                     }`}
                   >
-                    All Categories
+                    <LayoutGrid size={16} className="flex-shrink-0" />
+                    <span>All</span>
                   </button>
-                  {CATEGORIES.map((category) => (
+
+                  {/* Category Items */}
+                  {CATEGORIES.map(({ name, icon: Icon }) => (
                     <button
-                      key={category}
-                      onClick={() => setSelectedCategory(category)}
-                      className={`block w-full text-left px-3 py-2 rounded transition-colors ${
-                        selectedCategory === category
-                          ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                      key={name}
+                      onClick={() => setSelectedCategory(name)}
+                      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-all duration-150 border-l-2 ${
+                        selectedCategory === name
+                          ? "border-l-primary text-foreground bg-transparent hover:bg-white/5"
+                          : "border-l-transparent text-muted-foreground hover:text-foreground hover:bg-white/5"
                       }`}
                     >
-                      {category}
+                      <Icon size={16} className="flex-shrink-0" />
+                      <span className="truncate">{name}</span>
                     </button>
                   ))}
                 </div>
@@ -142,11 +149,13 @@ export default function Marketplace() {
 
               {/* Sort Filter */}
               <div>
-                <h3 className="font-semibold text-foreground mb-4">Sort By</h3>
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 px-1">
+                  Sort By
+                </h3>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full px-3 py-2 bg-secondary/50 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors text-sm"
+                  className="w-full px-3 py-2 bg-secondary/30 border border-border rounded-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all text-sm text-foreground"
                 >
                   <option value="newest">Newest</option>
                   <option value="popular">Most Popular</option>
