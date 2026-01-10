@@ -123,21 +123,21 @@ export default function BanNotice() {
           </div>
 
           {/* Violation Details */}
-          <div className="border-t border-gray-800 pt-6 space-y-4">
+          <div className="border-t border-gray-700 pt-6 space-y-4">
             <div>
-              <p className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-2">
-                Violation Reason
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                Reason
               </p>
-              <p className="text-gray-200 leading-relaxed">{warning.reason}</p>
+              <p className="text-gray-100 text-sm leading-relaxed">{warning.reason}</p>
             </div>
 
             {warning.details && (
               <div>
-                <p className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-2">
-                  Violation Details
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                  Details
                 </p>
-                <div className="bg-gray-950/50 border border-gray-800 rounded p-4">
-                  <p className="text-gray-300 text-sm font-mono">
+                <div className="bg-gray-900/80 border border-gray-700 rounded p-4">
+                  <p className="text-gray-300 text-xs leading-relaxed break-words">
                     {warning.details}
                   </p>
                 </div>
@@ -146,23 +146,22 @@ export default function BanNotice() {
           </div>
 
           {/* Review Information */}
-          <div className="bg-gray-950/60 border border-gray-800 rounded-lg p-4 space-y-3">
-            <div className="flex items-center gap-3">
-              <Calendar size={18} className="text-gray-500" />
-              <div className="flex-1">
-                <p className="text-xs text-gray-400 uppercase tracking-wide">
+          <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 space-y-3">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
                   Reviewed
                 </p>
-                <p className="text-sm text-gray-200">{reviewDate}</p>
+                <p className="text-sm text-gray-100">{reviewDate}</p>
               </div>
             </div>
 
             {warning.adminName && (
-              <div className="pt-3 border-t border-gray-800">
-                <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
-                  Reviewed By
+              <div className="pt-3 border-t border-gray-700">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
+                  Moderator
                 </p>
-                <p className="text-sm text-gray-200">{warning.adminName}</p>
+                <p className="text-sm text-gray-100">{warning.adminName}</p>
               </div>
             )}
           </div>
