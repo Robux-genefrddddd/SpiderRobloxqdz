@@ -413,12 +413,12 @@ export default function Dashboard() {
 
         {/* Warnings Tab */}
         {activeTab === "warnings" && (
-          <div className="space-y-4">
-            <div className="bg-secondary/30 border border-border rounded-lg p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <AlertTriangle size={24} className="text-yellow-400" />
+          <div className="space-y-3">
+            <div className="bg-secondary/30 border border-border rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <AlertTriangle size={18} className="text-yellow-400" />
                 <div>
-                  <h3 className="font-semibold text-foreground">
+                  <h3 className="font-semibold text-xs text-foreground">
                     Your Warnings & Bans
                   </h3>
                   <p className="text-xs text-muted-foreground">
@@ -432,12 +432,12 @@ export default function Dashboard() {
         )}
 
         {/* Logout Button */}
-        <div className="mt-8 pt-6 border-t border-border">
+        <div className="mt-6 pt-4 border-t border-border">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 rounded-lg transition-colors font-medium"
+            className="flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-lg transition-colors font-medium"
           >
-            <LogOut size={16} />
+            <LogOut size={14} />
             Sign Out
           </button>
         </div>
