@@ -74,8 +74,7 @@ export default function GroupChat({ groupId }: GroupChatProps) {
           `groups/${groupId}/messages/${filename}`,
         );
 
-        const arrayBuffer = await selectedImage.arrayBuffer();
-        await uploadImageToStorage(storageRef, new Blob([arrayBuffer]));
+        await uploadBytes(storageRef, selectedImage);
         imageUrl = await getDownloadURL(storageRef);
       }
 
