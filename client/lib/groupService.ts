@@ -40,12 +40,12 @@ export async function createGroup(
       ...groupData,
       creatorId,
       creatorName,
-      creatorAvatar,
+      creatorAvatar: creatorAvatar || null,
       members: [
         {
           userId: creatorId,
           username: creatorName,
-          avatar: creatorAvatar,
+          avatar: creatorAvatar || null,
           role: "admin",
           joinedAt: Timestamp.now(),
           isActive: true,
