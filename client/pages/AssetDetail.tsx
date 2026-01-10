@@ -538,149 +538,144 @@ export default function AssetDetail() {
         </div>
 
         {/* Reviews Section */}
-        <div className="mt-8 space-y-6">
-          <div>
-            <h2 className="text-lg font-bold mb-4">Reviews & Ratings</h2>
+        {reviews.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-sm font-semibold uppercase text-muted-foreground mb-4">
+              Reviews ({reviews.length})
+            </h2>
 
-            {/* Review Form */}
-            {user ? (
-              <form
-                onSubmit={handleSubmitReview}
-                className="bg-secondary/15 border border-border/15 rounded-lg p-6 mb-6"
-              >
-                <h3 className="font-semibold mb-4">
-                  {userReview ? "Edit Your Review" : "Leave a Review"}
-                </h3>
-
-                {/* Rating */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2">
-                    Rating <span className="text-red-500">*</span>
-                  </label>
-                  <div className="flex gap-2">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        onMouseEnter={() => setHoveredRating(star)}
-                        onMouseLeave={() => setHoveredRating(0)}
-                        onClick={() => setRating(star)}
-                        className="transition-transform hover:scale-110"
-                      >
-                        <Star
-                          size={28}
-                          className={`transition-colors ${
-                            star <= (hoveredRating || rating)
-                              ? "fill-accent text-accent"
-                              : "text-muted-foreground/30"
-                          }`}
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Message */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2">
-                    Your Review <span className="text-red-500">*</span>
-                  </label>
-                  <textarea
-                    value={reviewMessage}
-                    onChange={(e) => setReviewMessage(e.target.value)}
-                    placeholder="Share your thoughts about this asset..."
-                    rows={4}
-                    className="w-full px-3 py-2 bg-background border border-border rounded-lg focus:outline-none focus:border-primary transition-colors resize-none"
-                  />
-                </div>
-
-                {/* Submit Button */}
-                <div className="flex gap-2">
-                  <button
-                    type="submit"
-                    disabled={submittingReview}
-                    className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all font-medium text-sm disabled:opacity-50"
-                  >
-                    {submittingReview
-                      ? "Posting..."
-                      : userReview
-                        ? "Update Review"
-                        : "Post Review"}
-                  </button>
-
-                  {userReview && (
-                    <button
-                      type="button"
-                      onClick={handleDeleteReview}
-                      className="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-all font-medium text-sm flex items-center gap-2"
-                    >
-                      <Trash2 size={16} />
-                      Delete Review
-                    </button>
-                  )}
-                </div>
-              </form>
-            ) : (
-              <div className="bg-secondary/15 border border-border/15 rounded-lg p-6 mb-6 text-center">
-                <p className="text-muted-foreground mb-4">
-                  Sign in to leave a review
-                </p>
-                <Link to="/login">
-                  <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all font-medium text-sm">
-                    Sign In
-                  </button>
-                </Link>
-              </div>
-            )}
-
-            {/* Existing Reviews */}
-            <div className="space-y-3">
-              <h3 className="font-semibold text-sm mb-4">
-                {reviews.length === 0
-                  ? "No reviews yet"
-                  : `${reviews.length} Review${reviews.length !== 1 ? "s" : ""}`}
-              </h3>
-
+            <div className="space-y-3 max-w-3xl">
               {reviews.map((review) => (
                 <div
                   key={review.id}
-                  className="bg-secondary/15 border border-border/15 rounded-lg p-4 space-y-2"
+                  className="border border-border/20 rounded-lg p-3 space-y-2"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
                       <div className="flex gap-0.5">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Star
                             key={star}
-                            size={14}
+                            size={12}
                             className={
                               star <= review.rating
                                 ? "fill-accent text-accent"
-                                : "text-muted-foreground/30"
+                                : "text-muted-foreground/20"
                             }
                           />
                         ))}
                       </div>
-                      <span className="text-sm font-medium text-foreground">
-                        {review.rating.toFixed(1)}
+                      <span className="text-xs font-semibold">
+                        {review.userName}
                       </span>
                     </div>
                     <p className="text-xs text-muted-foreground">
                       {review.createdAt.toLocaleDateString()}
                     </p>
                   </div>
-
-                  <p className="text-sm font-medium text-foreground">
-                    {review.userName}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-foreground/85">
                     {review.message}
                   </p>
                 </div>
               ))}
             </div>
+
+            {/* User Review Form - Compact */}
+            {user && (
+              <div className="mt-4 pt-4 border-t border-border/20">
+                {userReview ? (
+                  <form onSubmit={handleSubmitReview} className="space-y-2">
+                    <p className="text-xs font-semibold mb-3">Edit Your Review</p>
+                    <div className="flex gap-1 mb-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onMouseEnter={() => setHoveredRating(star)}
+                          onMouseLeave={() => setHoveredRating(0)}
+                          onClick={() => setRating(star)}
+                          className="transition-transform"
+                        >
+                          <Star
+                            size={16}
+                            className={`transition-colors ${
+                              star <= (hoveredRating || rating)
+                                ? "fill-accent text-accent"
+                                : "text-muted-foreground/20"
+                            }`}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                    <textarea
+                      value={reviewMessage}
+                      onChange={(e) => setReviewMessage(e.target.value)}
+                      placeholder="Update your review..."
+                      rows={3}
+                      className="w-full px-3 py-2 text-xs bg-background border border-border rounded-lg focus:outline-none focus:border-primary transition-colors resize-none"
+                    />
+                    <div className="flex gap-2 pt-2">
+                      <button
+                        type="submit"
+                        disabled={submittingReview}
+                        className="px-3 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all font-medium disabled:opacity-50"
+                      >
+                        {submittingReview ? "Saving..." : "Update"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleDeleteReview}
+                        className="px-3 py-1.5 text-xs bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-all font-medium flex items-center gap-1"
+                      >
+                        <Trash2 size={12} />
+                        Delete
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <form onSubmit={handleSubmitReview} className="space-y-2">
+                    <p className="text-xs font-semibold mb-3">Leave a Review</p>
+                    <div className="flex gap-1 mb-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onMouseEnter={() => setHoveredRating(star)}
+                          onMouseLeave={() => setHoveredRating(0)}
+                          onClick={() => setRating(star)}
+                          className="transition-transform"
+                        >
+                          <Star
+                            size={16}
+                            className={`transition-colors ${
+                              star <= (hoveredRating || rating)
+                                ? "fill-accent text-accent"
+                                : "text-muted-foreground/20"
+                            }`}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                    <textarea
+                      value={reviewMessage}
+                      onChange={(e) => setReviewMessage(e.target.value)}
+                      placeholder="Share your thoughts..."
+                      rows={3}
+                      className="w-full px-3 py-2 text-xs bg-background border border-border rounded-lg focus:outline-none focus:border-primary transition-colors resize-none"
+                    />
+                    <button
+                      type="submit"
+                      disabled={submittingReview}
+                      className="px-3 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all font-medium disabled:opacity-50"
+                    >
+                      {submittingReview ? "Posting..." : "Post Review"}
+                    </button>
+                  </form>
+                )}
+              </div>
+            )}
           </div>
-        </div>
+        )}
 
         {/* Back to Marketplace */}
         <div className="mt-8">
