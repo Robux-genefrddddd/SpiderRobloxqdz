@@ -82,7 +82,7 @@ export default function GroupChat({ groupId }: GroupChatProps) {
         groupId,
         userProfile.uid,
         userProfile.displayName,
-        userProfile.profileImage,
+        userProfile.profileImage || undefined,
         content,
         imageUrl,
       );
