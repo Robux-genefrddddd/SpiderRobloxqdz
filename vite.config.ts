@@ -36,9 +36,10 @@ function expressPlugin(): Plugin {
       server.middlewares.use((req, res, next) => {
         // Redirect /.netlify/functions/* to /api/*
         if (req.url?.startsWith("/.netlify/functions/")) {
-          const apiPath = req.url.replace("/.netlify/functions/", "/api/");
+          const originalUrl = req.url;
+          const apiPath = originalUrl.replace("/.netlify/functions/", "/api/");
           req.url = apiPath;
-          console.log(`[DEV] Redirecting Netlify Function: ${req.url} → ${apiPath}`);
+          console.log(`[DEV] Redirecting: ${originalUrl} → ${apiPath}`);
         }
         next();
       });
