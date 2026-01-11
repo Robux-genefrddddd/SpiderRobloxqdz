@@ -53,9 +53,18 @@ export function FilePreviewModal({
           // Select all files by default
           setSelectedFiles(new Set(assetFiles.map((f) => f.path)));
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Error fetching files:", err);
-        setError("Failed to load files");
+        const errorCode = err?.code || "unknown";
+
+        // Provide helpful error message
+        if (errorCode === "storage/unauthorized") {
+          setError("Access denied. Firebase Storage rules may not be configured.");
+        } else if (errorCode === "storage/object-not-found") {
+          setError("No files found for this asset. Upload files first.");
+        } else {
+          setError("Failed to load files. Check console for details.");
+        }
       } finally {
         setLoading(false);
       }
