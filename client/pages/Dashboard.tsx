@@ -50,6 +50,7 @@ import {
   getTimeRemaining,
 } from "@/lib/scheduledUploadService";
 import { toast } from "sonner";
+import { Loader } from "@/components/ui/loader";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<
