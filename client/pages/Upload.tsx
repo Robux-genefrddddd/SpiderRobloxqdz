@@ -313,6 +313,7 @@ export default function Upload() {
                 onBannerChange={setBannerUrl}
                 onFilesAdd={handleAddFiles}
                 onFileRemove={handleRemoveFile}
+                isValidatingFiles={isValidatingFiles}
               />
             )}
 
