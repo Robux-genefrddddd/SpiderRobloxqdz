@@ -59,7 +59,9 @@ export function FilePreviewModal({
 
         // Provide helpful error message
         if (errorCode === "storage/unauthorized") {
-          setError("Access denied. Firebase Storage rules may not be configured.");
+          setError(
+            "Access denied. Firebase Storage rules may not be configured.",
+          );
         } else if (errorCode === "storage/object-not-found") {
           setError("No files found for this asset. Upload files first.");
         } else {

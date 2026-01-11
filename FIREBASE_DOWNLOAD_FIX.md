@@ -1,7 +1,9 @@
 # ✅ Firebase Storage Download Fix - Quick Checklist
 
 ## The Problem
+
 When you try to download files from `/` or `/asset`, you get:
+
 ```
 firebase_storage.js?v=515d750b:1498
 doTheRequest @ firebase_storage.js?v=515d750b:456
@@ -21,6 +23,7 @@ doTheRequest @ firebase_storage.js?v=515d750b:456
 2. Click **Rules** tab
 
 3. Replace the text with:
+
 ```
 rules_version = '2';
 service firebase.storage {
@@ -48,16 +51,19 @@ service firebase.storage {
 ### Method 2: Firebase CLI (Recommended for production)
 
 1. Install Firebase CLI:
+
 ```bash
 npm install -g firebase-tools
 ```
 
 2. Login:
+
 ```bash
 firebase login
 ```
 
 3. Deploy:
+
 ```bash
 firebase deploy --only storage
 ```
@@ -80,11 +86,13 @@ After deploying:
 ## What Changed in Your Project
 
 ✅ **New files created:**
+
 - `storage.rules` - Security rules
 - `firebase.json` - Firebase config
 - `FIREBASE_STORAGE_SETUP.md` - Full documentation
 
 ✅ **Updated:**
+
 - `client/lib/fileService.ts` - Better error messages
 - `client/components/FilePreviewModal.tsx` - Better error handling
 
@@ -99,6 +107,7 @@ Check your browser console (F12) for the full error:
 - **`storage/retry-limit-exceeded`** → Network/connection issue
 
 ### Debug Steps:
+
 1. Open Browser DevTools (F12)
 2. Go to **Console** tab
 3. Try downloading a file
@@ -110,6 +119,7 @@ Check your browser console (F12) for the full error:
 ## Files Downloaded From
 
 When deployed correctly, the app downloads from:
+
 - `gs://keysystem-d0b86-8df89.firebasestorage.app/assets/{assetId}/{filename}`
 
 These are all **public read** (anyone can download).

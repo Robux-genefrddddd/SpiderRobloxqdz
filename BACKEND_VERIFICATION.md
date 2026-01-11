@@ -11,6 +11,7 @@ All components are in place and working correctly.
 ## Verification Checklist
 
 ### ✅ Backend Structure
+
 - [x] Express.js server properly configured
 - [x] Routes registered in `server/index.ts`
 - [x] Download proxy endpoint created (`server/routes/download.ts`)
@@ -18,6 +19,7 @@ All components are in place and working correctly.
 - [x] Serverless-http wrapper available
 
 ### ✅ Netlify Configuration
+
 - [x] `netlify.toml` exists and is properly formatted
 - [x] `netlify/functions/api.ts` wraps Express with serverless-http
 - [x] API rewrite rule configured: `/api/*` → `/.netlify/functions/api/*`
@@ -25,6 +27,7 @@ All components are in place and working correctly.
 - [x] Functions bundle: `netlify/functions`
 
 ### ✅ Vercel Configuration
+
 - [x] `vercel.json` created with proper settings
 - [x] `api/index.ts` wraps Express with serverless-http
 - [x] API rewrite rule configured: `/api/*` → `/api`
@@ -56,6 +59,7 @@ All components are in place and working correctly.
    - Example: `/api/download?filePath=assets%2Fasset-id%2Ffile.rbxm&fileName=file.rbxm`
 
 #### React Router Fallback
+
 - [x] SPA routing configured in `server/node-build.ts`
 - [x] Non-API routes served via `index.html` (React Router handles routing)
 - [x] 404 response for missing API endpoints
@@ -63,6 +67,7 @@ All components are in place and working correctly.
 ### ✅ Dependencies
 
 #### Backend Runtime
+
 ```
 ✅ express@5.1.0 - Web framework
 ✅ cors@2.8.5 - CORS middleware
@@ -72,6 +77,7 @@ All components are in place and working correctly.
 ```
 
 #### Node Version
+
 ```
 ✅ Node 18+ (Netlify default)
 ✅ Node 20.x (Vercel recommended)
@@ -88,6 +94,7 @@ All components are in place and working correctly.
 ### ✅ Build Configuration
 
 #### Vite Configs
+
 - [x] `vite.config.ts` - Frontend build (outputs to `dist/spa`)
 - [x] `vite.config.server.ts` - Backend build (outputs to `dist/server`)
 - [x] `package.json` build commands:
@@ -96,6 +103,7 @@ All components are in place and working correctly.
   - `npm run build:server` - Backend only
 
 #### Build Output
+
 ```
 dist/
 ├── spa/              ← Frontend (static files)
@@ -116,6 +124,7 @@ dist/
 **Current Status**: ✅ Ready to Deploy
 
 **Configuration File**: `netlify.toml`
+
 ```toml
 [build]
   command = "npm run build:client"        # Build frontend only
@@ -128,11 +137,13 @@ dist/
 ```
 
 **Handler**: `netlify/functions/api.ts`
+
 ```typescript
 export const handler = serverless(createServer());
 ```
 
 **How It Works**:
+
 1. Netlify sees `/api/download` request
 2. Rewrites to `/.netlify/functions/api/download`
 3. Function handler processes request
@@ -143,21 +154,22 @@ export const handler = serverless(createServer());
 **Current Status**: ✅ Ready to Deploy
 
 **Configuration File**: `vercel.json`
+
 ```json
 {
   "outputDirectory": "dist/spa",
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api" }
-  ]
+  "rewrites": [{ "source": "/api/(.*)", "destination": "/api" }]
 }
 ```
 
 **Handler**: `api/index.ts`
+
 ```typescript
 export default serverless(createServer());
 ```
 
 **How It Works**:
+
 1. Vercel sees `/api/download` request
 2. Routes to `/api` handler
 3. Express server processes request
@@ -168,6 +180,7 @@ export default serverless(createServer());
 ## Testing Commands
 
 ### Local Development
+
 ```bash
 # Install dependencies
 npm install
@@ -184,6 +197,7 @@ npm run start
 ```
 
 ### Test API Endpoints
+
 ```bash
 # Test ping endpoint
 curl http://localhost:8080/api/ping
@@ -195,6 +209,7 @@ curl "http://localhost:8080/api/download?filePath=assets/test/file.txt"
 ```
 
 ### Build Verification
+
 ```bash
 # Check build output
 ls -la dist/spa/      # Frontend files
@@ -214,23 +229,27 @@ cat dist/server/production.mjs | head -20  # Should contain JavaScript
 Before deploying to Netlify or Vercel:
 
 ### Code Quality
+
 - [ ] Run `npm run typecheck` - No TypeScript errors
 - [ ] Run `npm run test` - Tests pass (if applicable)
 - [ ] Run `npm run build` - Build completes without errors
 - [ ] Check `npm run build` output - No warnings
 
 ### Firebase Configuration
+
 - [ ] Firebase Storage rules deployed (firestore console)
 - [ ] Storage bucket allows public reads
 - [ ] Check `client/lib/firebase.ts` - Correct project ID
 - [ ] Test upload/download locally works
 
 ### Environment Variables
+
 - [ ] No secrets in client code ✅
 - [ ] Firebase config is public (expected) ✅
 - [ ] If using custom env vars, add to platform settings
 
 ### Repository
+
 - [ ] All changes committed to git
 - [ ] Ready to push to GitHub
 - [ ] No large files in repo (> 50 MB)
@@ -242,6 +261,7 @@ Before deploying to Netlify or Vercel:
 ### For Netlify
 
 1. **Push code to GitHub**
+
    ```bash
    git add .
    git commit -m "Add backend deployment config"
@@ -262,6 +282,7 @@ Before deploying to Netlify or Vercel:
 ### For Vercel
 
 1. **Push code to GitHub**
+
    ```bash
    git add .
    git commit -m "Add backend deployment config"
@@ -284,18 +305,22 @@ Before deploying to Netlify or Vercel:
 ## Verification After Deployment
 
 ### Test Homepage
+
 ```
 ✅ https://your-site.netlify.app/
 ✅ https://your-project.vercel.app/
 ```
+
 Should show your app's homepage.
 
 ### Test Asset Download
+
 1. Navigate to an asset page
 2. Click "Download" button
 3. Should download file **WITHOUT CORS errors** ✅
 
 ### Test API
+
 ```bash
 # Test ping
 curl https://your-site.netlify.app/api/ping
@@ -306,6 +331,7 @@ curl https://your-project.vercel.app/api/ping
 ```
 
 ### Check Browser Console
+
 No errors should appear when downloading files.
 
 ---
@@ -313,6 +339,7 @@ No errors should appear when downloading files.
 ## Summary
 
 ### ✅ What's Ready
+
 - Express backend with CORS proxy
 - Netlify serverless configuration
 - Vercel serverless configuration
@@ -320,12 +347,14 @@ No errors should appear when downloading files.
 - Download endpoint for bypassing CORS
 
 ### ✅ What Works
+
 - Frontend (React SPA)
 - API routes (Netlify & Vercel)
 - File downloads (no CORS)
 - Static file serving
 
 ### ✅ Next Steps
+
 1. Push code to GitHub
 2. Deploy to Netlify or Vercel
 3. Test downloads work
@@ -338,6 +367,7 @@ No errors should appear when downloading files.
 ### Problem: "API endpoint not found" (404)
 
 **Check**:
+
 - [ ] API rewrite configured in deployment platform
 - [ ] Netlify: Check `netlify.toml` has redirect rule
 - [ ] Vercel: Check `vercel.json` has rewrite rule
@@ -346,6 +376,7 @@ No errors should appear when downloading files.
 ### Problem: Downloads fail with error
 
 **Check**:
+
 - [ ] Firefox Storage rules allow public read (`allow read`)
 - [ ] Files are actually uploaded to Storage
 - [ ] Backend endpoint `/api/download` is accessible
@@ -354,6 +385,7 @@ No errors should appear when downloading files.
 ### Problem: Deployment fails
 
 **Check**:
+
 - [ ] No build errors: `npm run build`
 - [ ] All dependencies installed: `npm install`
 - [ ] No large files: `git lfs` if > 100 MB files

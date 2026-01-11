@@ -40,19 +40,16 @@ export async function createScheduledUpload(
   scheduledFor: Date,
 ): Promise<string> {
   try {
-    const docRef = await addDoc(
-      collection(db, SCHEDULED_UPLOADS_COLLECTION),
-      {
-        assetId,
-        userId,
-        files,
-        changeNotes,
-        scheduledFor: Timestamp.fromDate(scheduledFor),
-        status: "scheduled",
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
-      },
-    );
+    const docRef = await addDoc(collection(db, SCHEDULED_UPLOADS_COLLECTION), {
+      assetId,
+      userId,
+      files,
+      changeNotes,
+      scheduledFor: Timestamp.fromDate(scheduledFor),
+      status: "scheduled",
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
+    });
     return docRef.id;
   } catch (error) {
     console.error("Error creating scheduled upload:", error);
@@ -79,7 +76,9 @@ export async function getUserScheduledUploads(
         createdAt: doc.data().createdAt?.toDate?.() || new Date(),
         updatedAt: doc.data().updatedAt?.toDate?.() || new Date(),
       }))
-      .sort((a, b) => b.scheduledFor.getTime() - a.scheduledFor.getTime()) as ScheduledUpload[];
+      .sort(
+        (a, b) => b.scheduledFor.getTime() - a.scheduledFor.getTime(),
+      ) as ScheduledUpload[];
 
     return uploads;
   } catch (error) {

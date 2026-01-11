@@ -1,6 +1,7 @@
 # Firebase Storage Setup - Download Fix
 
 ## Problem
+
 ❌ Downloads fail with error: `firebase_storage.js doTheRequest @ firebase_storage.js:456`
 
 **Root Cause**: Firebase Storage security rules are not configured, so all download requests are blocked.
@@ -10,16 +11,19 @@
 ### Option 1: Deploy Rules via Firebase CLI (Recommended)
 
 **Step 1**: Install Firebase CLI
+
 ```bash
 npm install -g firebase-tools
 ```
 
 **Step 2**: Login to Firebase
+
 ```bash
 firebase login
 ```
 
 **Step 3**: Initialize Firebase (if not done)
+
 ```bash
 firebase init
 # Select your project: keysystem-d0b86-8df89
@@ -27,6 +31,7 @@ firebase init
 ```
 
 **Step 4**: Deploy Storage Rules
+
 ```bash
 firebase deploy --only storage
 ```
@@ -76,18 +81,19 @@ service firebase.storage {
 
 ## What These Rules Do
 
-| Operation | Path | Allowed For | Rule |
-|-----------|------|-------------|------|
-| **Download** | `/assets/{assetId}/*` | Everyone | `allow read` |
-| **Upload** | `/assets/{assetId}/*` | Authenticated users | `allow write: if request.auth != null` |
-| **Delete** | `/assets/{assetId}/*` | Authenticated users | `allow write: if request.auth != null` |
-| **Temporary files** | `/temp/{userId}/*` | The user | `allow read, write: if request.auth.uid == userId` |
+| Operation           | Path                  | Allowed For         | Rule                                               |
+| ------------------- | --------------------- | ------------------- | -------------------------------------------------- |
+| **Download**        | `/assets/{assetId}/*` | Everyone            | `allow read`                                       |
+| **Upload**          | `/assets/{assetId}/*` | Authenticated users | `allow write: if request.auth != null`             |
+| **Delete**          | `/assets/{assetId}/*` | Authenticated users | `allow write: if request.auth != null`             |
+| **Temporary files** | `/temp/{userId}/*`    | The user            | `allow read, write: if request.auth.uid == userId` |
 
 ---
 
 ## Testing
 
 After deploying rules, try to:
+
 1. Download an asset from `/asset/:id`
 2. Download from `/` marketplace
 
@@ -99,11 +105,11 @@ Both should work without errors.
 
 If you still get errors, check the error code:
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `storage/object-not-found` | File doesn't exist in Storage | Check file was uploaded correctly |
-| `storage/unauthorized` | Rules deny access | Check Firebase Storage rules are deployed |
-| `storage/retry-limit-exceeded` | Network issue | Check internet connection |
+| Error                          | Cause                         | Solution                                  |
+| ------------------------------ | ----------------------------- | ----------------------------------------- |
+| `storage/object-not-found`     | File doesn't exist in Storage | Check file was uploaded correctly         |
+| `storage/unauthorized`         | Rules deny access             | Check Firebase Storage rules are deployed |
+| `storage/retry-limit-exceeded` | Network issue                 | Check internet connection                 |
 
 ---
 

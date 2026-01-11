@@ -33,7 +33,9 @@ export const handleDownload: RequestHandler = async (req, res) => {
     const response = await fetch(firebaseUrl);
 
     if (!response.ok) {
-      console.error(`Firebase Storage error: ${response.status} ${response.statusText}`);
+      console.error(
+        `Firebase Storage error: ${response.status} ${response.statusText}`,
+      );
 
       if (response.status === 404) {
         return res.status(404).json({
@@ -57,10 +59,13 @@ export const handleDownload: RequestHandler = async (req, res) => {
     const buffer = await response.arrayBuffer();
 
     // Set response headers for file download
-    res.setHeader("Content-Type", response.headers.get("content-type") || "application/octet-stream");
+    res.setHeader(
+      "Content-Type",
+      response.headers.get("content-type") || "application/octet-stream",
+    );
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename="${fileName || filePath.split("/").pop() || "file"}"`
+      `attachment; filename="${fileName || filePath.split("/").pop() || "file"}"`,
     );
     res.setHeader("Content-Length", buffer.byteLength);
     res.setHeader("Cache-Control", "public, max-age=3600");

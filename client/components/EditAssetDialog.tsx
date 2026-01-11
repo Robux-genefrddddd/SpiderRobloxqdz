@@ -164,7 +164,10 @@ export function EditAssetDialog({
           {/* Category */}
           <div>
             <label className="text-sm font-medium block mb-1.5">Category</label>
-            <Select value={formData.category} onValueChange={handleCategoryChange}>
+            <Select
+              value={formData.category}
+              onValueChange={handleCategoryChange}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
@@ -180,7 +183,9 @@ export function EditAssetDialog({
 
           {/* Price */}
           <div>
-            <label className="text-sm font-medium block mb-1.5">Price ($)</label>
+            <label className="text-sm font-medium block mb-1.5">
+              Price ($)
+            </label>
             <input
               type="number"
               name="price"

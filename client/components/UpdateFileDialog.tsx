@@ -86,10 +86,7 @@ export function UpdateFileDialog({
       }
 
       // Update asset with new files and change notes
-      const updatedFilePaths = [
-        ...(asset.filePaths || []),
-        ...uploadedPaths,
-      ];
+      const updatedFilePaths = [...(asset.filePaths || []), ...uploadedPaths];
 
       await updateAsset(asset.id, {
         filePaths: updatedFilePaths,
@@ -101,9 +98,7 @@ export function UpdateFileDialog({
         filePaths: updatedFilePaths,
       };
 
-      toast.success(
-        `${files.length} file(s) uploaded successfully`,
-      );
+      toast.success(`${files.length} file(s) uploaded successfully`);
       onSuccess(updatedAsset);
       setFiles([]);
       setChangeNotes("");
@@ -130,7 +125,10 @@ export function UpdateFileDialog({
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* File Upload Area */}
           <div>
-            <label htmlFor="file-input" className="text-sm font-medium block mb-1.5">
+            <label
+              htmlFor="file-input"
+              className="text-sm font-medium block mb-1.5"
+            >
               Select Files
             </label>
             <input
@@ -168,7 +166,10 @@ export function UpdateFileDialog({
                     className="flex items-center justify-between p-2.5 bg-card/50 border border-border/50 rounded-lg"
                   >
                     <div className="flex items-center gap-2 flex-1 min-w-0">
-                      <File size={14} className="text-muted-foreground flex-shrink-0" />
+                      <File
+                        size={14}
+                        className="text-muted-foreground flex-shrink-0"
+                      />
                       <div className="min-w-0 flex-1">
                         <p className="text-xs font-medium text-foreground truncate">
                           {file.name}

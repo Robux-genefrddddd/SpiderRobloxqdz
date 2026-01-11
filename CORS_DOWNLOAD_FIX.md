@@ -1,7 +1,9 @@
 # CORS Download Error Fix
 
 ## Problem
+
 When downloading files from the asset pages, you get this error:
+
 ```
 Access to XMLHttpRequest at 'https://firebasestorage.googleapis.com/...' from origin 'https://97317377ff054164a28036d64c06f1f4-vibe-haven.builderio.xyz' has been blocked by CORS policy
 ```
@@ -15,11 +17,13 @@ Access to XMLHttpRequest at 'https://firebasestorage.googleapis.com/...' from or
 ### What Changed
 
 **Problem**: Client directly fetches from Firebase Storage (CORS blocked)
+
 ```
 Browser → Firebase Storage (BLOCKED ❌)
 ```
 
 **Solution**: Client requests from backend, backend proxies to Firebase
+
 ```
 Browser → Your Backend → Firebase Storage (ALLOWED ✅)
 ```
@@ -45,7 +49,9 @@ Browser → Your Backend → Firebase Storage (ALLOWED ✅)
 ## Deployment
 
 ### For Development
+
 No changes needed! Just rebuild:
+
 ```bash
 npm run build
 npm run dev
@@ -54,6 +60,7 @@ npm run dev
 The backend automatically handles downloads via the new `/api/download` endpoint.
 
 ### For Production
+
 The backend proxy is already configured and will work out of the box.
 
 ---
@@ -72,11 +79,13 @@ The backend proxy is already configured and will work out of the box.
 5. **Browser downloads file** (no CORS issues!)
 
 ### Example Request
+
 ```
 GET /api/download?filePath=assets%2FZb5iMlb3gDdWOywYxUOi%2FCameraSystem.rbxm&fileName=CameraSystem.rbxm
 ```
 
 ### Backend Response
+
 ```
 HTTP/1.1 200 OK
 Content-Type: application/octet-stream
@@ -94,15 +103,18 @@ Accept-Ranges: bytes
 The download endpoint includes security checks:
 
 ✅ **Path Validation**
+
 - Blocks `..` (directory traversal)
 - Blocks paths starting with `/`
 
 ✅ **Error Handling**
+
 - Returns 404 if file not found
 - Returns 403 if access denied
 - Returns 500 for other errors
 
 ✅ **No Authentication Required**
+
 - Files are public (readable by everyone)
 - Upload/delete still requires authentication via Firebase Rules
 
@@ -118,6 +130,7 @@ After deployment:
 4. Files should download **without CORS errors** ✅
 
 ### Debugging
+
 If you still get errors:
 
 1. Open Browser DevTools (F12)
@@ -134,6 +147,7 @@ If you still get errors:
 If you prefer to configure CORS directly on Firebase Storage (instead of using the backend proxy):
 
 ### Step 1: Install Google Cloud SDK
+
 ```bash
 curl https://sdk.cloud.google.com | bash
 exec -l $SHELL
@@ -141,11 +155,13 @@ gcloud init
 ```
 
 ### Step 2: Configure CORS
+
 ```bash
 gsutil cors set cors.json gs://keysystem-d0b86-8df89.firebasestorage.app
 ```
 
 ### Step 3: Verify
+
 ```bash
 gsutil cors get gs://keysystem-d0b86-8df89.firebasestorage.app
 ```
@@ -156,13 +172,13 @@ gsutil cors get gs://keysystem-d0b86-8df89.firebasestorage.app
 
 ## Comparison: Proxy vs Direct CORS
 
-| Feature | Proxy (✅ Used) | Direct CORS |
-|---------|-----------|-----------|
-| Easiest to set up | ✅ Works out of box | Need `gsutil` + CLI |
-| Bypass cross-origin | ✅ Yes | No - still CORS |
-| Add logging/tracking | ✅ Easy | Hard |
-| Access control | ✅ Server-side | Limited |
-| Rate limiting | ✅ Can add | Hard |
+| Feature              | Proxy (✅ Used)     | Direct CORS         |
+| -------------------- | ------------------- | ------------------- |
+| Easiest to set up    | ✅ Works out of box | Need `gsutil` + CLI |
+| Bypass cross-origin  | ✅ Yes              | No - still CORS     |
+| Add logging/tracking | ✅ Easy             | Hard                |
+| Access control       | ✅ Server-side      | Limited             |
+| Rate limiting        | ✅ Can add          | Hard                |
 
 **Why proxy is better**: It gives you full control over downloads and makes it easier to add features like logging, access control, and rate limiting.
 
@@ -170,12 +186,12 @@ gsutil cors get gs://keysystem-d0b86-8df89.firebasestorage.app
 
 ## Files Reference
 
-| File | Purpose |
-|------|---------|
-| `server/routes/download.ts` | Download proxy endpoint |
-| `server/index.ts` | Routes registration |
-| `client/lib/fileService.ts` | Download function (updated) |
-| `cors.json` | CORS config (optional fallback) |
+| File                        | Purpose                         |
+| --------------------------- | ------------------------------- |
+| `server/routes/download.ts` | Download proxy endpoint         |
+| `server/index.ts`           | Routes registration             |
+| `client/lib/fileService.ts` | Download function (updated)     |
+| `cors.json`                 | CORS config (optional fallback) |
 
 ---
 

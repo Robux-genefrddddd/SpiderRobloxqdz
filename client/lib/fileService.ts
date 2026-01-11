@@ -39,7 +39,10 @@ export async function uploadAssetFile(
 
 // Download asset file from Firebase Storage via backend proxy
 // This bypasses CORS issues by routing through the app's backend server
-export async function downloadAssetFile(filePath: string, fileName?: string): Promise<Blob> {
+export async function downloadAssetFile(
+  filePath: string,
+  fileName?: string,
+): Promise<Blob> {
   try {
     console.log("Downloading file via backend proxy:", filePath);
 
@@ -61,13 +64,11 @@ export async function downloadAssetFile(filePath: string, fileName?: string): Pr
         throw new Error("File not found. It may have been deleted.");
       } else if (response.status === 403) {
         console.error("Access denied for file:", filePath);
-        throw new Error(
-          "You don't have permission to download this file."
-        );
+        throw new Error("You don't have permission to download this file.");
       }
 
       throw new Error(
-        `Download failed (${response.status}): ${errorData?.error || "Unknown error"}`
+        `Download failed (${response.status}): ${errorData?.error || "Unknown error"}`,
       );
     }
 
@@ -83,12 +84,17 @@ export async function downloadAssetFile(filePath: string, fileName?: string): Pr
     }
 
     // Provide user-friendly error messages for network issues
-    if (error?.name === "TypeError" && error?.message?.includes("Failed to fetch")) {
-      throw new Error("Network error. Please check your connection and try again.");
+    if (
+      error?.name === "TypeError" &&
+      error?.message?.includes("Failed to fetch")
+    ) {
+      throw new Error(
+        "Network error. Please check your connection and try again.",
+      );
     }
 
     throw new Error(
-      error?.message || "Failed to download file. Please try again."
+      error?.message || "Failed to download file. Please try again.",
     );
   }
 }
@@ -178,12 +184,18 @@ export async function listAssetFiles(assetId: string): Promise<AssetFile[]> {
         });
       } catch (err: any) {
         const errorCode = err?.code || "unknown";
-        console.error(`Error getting metadata for ${fileRef.name}:`, errorCode, err);
+        console.error(
+          `Error getting metadata for ${fileRef.name}:`,
+          errorCode,
+          err,
+        );
       }
     }
 
     if (files.length === 0) {
-      console.warn(`No files found in asset folder: ${ASSETS_BUCKET}/${assetId}`);
+      console.warn(
+        `No files found in asset folder: ${ASSETS_BUCKET}/${assetId}`,
+      );
     }
 
     return files;

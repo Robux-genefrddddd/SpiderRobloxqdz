@@ -64,10 +64,14 @@ export default function Dashboard() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [updateFileAsset, setUpdateFileAsset] = useState<Asset | null>(null);
   const [updateFileDialogOpen, setUpdateFileDialogOpen] = useState(false);
-  const [scheduleUploadAsset, setScheduleUploadAsset] = useState<Asset | null>(null);
+  const [scheduleUploadAsset, setScheduleUploadAsset] = useState<Asset | null>(
+    null,
+  );
   const [scheduleUploadDialogOpen, setScheduleUploadDialogOpen] =
     useState(false);
-  const [scheduledUploads, setScheduledUploads] = useState<ScheduledUpload[]>([]);
+  const [scheduledUploads, setScheduledUploads] = useState<ScheduledUpload[]>(
+    [],
+  );
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -112,8 +116,7 @@ export default function Dashboard() {
 
   const handleTogglePublish = async (asset: Asset) => {
     try {
-      const newStatus =
-        asset.status === "published" ? "draft" : "published";
+      const newStatus = asset.status === "published" ? "draft" : "published";
       await updateAsset(asset.id, { status: newStatus });
 
       setAssets(
@@ -133,9 +136,7 @@ export default function Dashboard() {
   const handleCancelScheduledUpload = async (uploadId: string) => {
     try {
       await cancelScheduledUpload(uploadId);
-      setScheduledUploads(
-        scheduledUploads.filter((u) => u.id !== uploadId),
-      );
+      setScheduledUploads(scheduledUploads.filter((u) => u.id !== uploadId));
       toast.success("Scheduled upload cancelled");
     } catch (error) {
       toast.error("Failed to cancel scheduled upload");
@@ -361,7 +362,9 @@ export default function Dashboard() {
                         </span>
                         {upload.status === "scheduled" && (
                           <button
-                            onClick={() => handleCancelScheduledUpload(upload.id)}
+                            onClick={() =>
+                              handleCancelScheduledUpload(upload.id)
+                            }
                             className="p-1 hover:bg-card rounded transition-colors"
                           >
                             <X size={14} className="text-destructive" />
@@ -447,7 +450,10 @@ export default function Dashboard() {
                                   {asset.name}
                                 </p>
                                 <p className="text-xs text-muted-foreground">
-                                  {asset.downloads} {asset.downloads === 1 ? "download" : "downloads"}
+                                  {asset.downloads}{" "}
+                                  {asset.downloads === 1
+                                    ? "download"
+                                    : "downloads"}
                                 </p>
                               </div>
                             </div>
@@ -586,9 +592,7 @@ export default function Dashboard() {
           <div className="flex gap-3 justify-end">
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() =>
-                deleteConfirm && handleDeleteAsset(deleteConfirm)
-              }
+              onClick={() => deleteConfirm && handleDeleteAsset(deleteConfirm)}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Delete
