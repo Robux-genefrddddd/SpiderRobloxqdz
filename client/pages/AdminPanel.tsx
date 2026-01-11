@@ -570,6 +570,94 @@ export default function AdminPanel() {
               </div>
             )}
           </div>
+        ) : activeTab === "tickets" ? (
+          <div className="space-y-4">
+            {/* Search */}
+            <div className="relative">
+              <Search
+                size={16}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+              />
+              <Input
+                placeholder="Search tickets by subject..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9 py-2 text-sm h-9"
+              />
+            </div>
+
+            {/* Tickets List */}
+            <div className="space-y-2">
+              {tickets.length === 0 ? (
+                <div className="text-center py-8">
+                  <MessageSquare
+                    size={32}
+                    className="mx-auto text-muted-foreground mb-2"
+                  />
+                  <p className="text-sm text-muted-foreground">No tickets yet</p>
+                </div>
+              ) : (
+                tickets
+                  .filter((t) =>
+                    t.subject.toLowerCase().includes(searchTerm.toLowerCase()),
+                  )
+                  .map((ticket) => (
+                    <div
+                      key={ticket.id}
+                      onClick={() => setSelectedTicket(ticket)}
+                      className="p-3 bg-card border border-border/30 rounded-lg hover:border-border/60 hover:bg-card/80 transition-all cursor-pointer group"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h3 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors truncate">
+                              {ticket.subject}
+                            </h3>
+                            <span
+                              className={`px-2 py-0.5 rounded text-xs font-medium ${
+                                ticket.status === "open"
+                                  ? "bg-blue-500/20 text-blue-400"
+                                  : ticket.status === "in-progress"
+                                    ? "bg-yellow-500/20 text-yellow-400"
+                                    : ticket.status === "waiting"
+                                      ? "bg-purple-500/20 text-purple-400"
+                                      : ticket.status === "resolved"
+                                        ? "bg-green-500/20 text-green-400"
+                                        : "bg-gray-500/20 text-gray-400"
+                              }`}
+                            >
+                              {ticket.status}
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            From {ticket.userName} ({ticket.userEmail})
+                          </p>
+                          <p className="text-xs text-muted-foreground/70 mt-1">
+                            Category: {ticket.category} • Priority:{" "}
+                            <span
+                              className={
+                                ticket.priority === "critical"
+                                  ? "text-red-400"
+                                  : ticket.priority === "high"
+                                    ? "text-orange-400"
+                                    : ticket.priority === "normal"
+                                      ? "text-blue-400"
+                                      : "text-gray-400"
+                              }
+                            >
+                              {ticket.priority}
+                            </span>
+                          </p>
+                        </div>
+                        <div className="text-xs text-muted-foreground whitespace-nowrap flex-shrink-0 text-right">
+                          <div>{ticket.updatedAt.toLocaleDateString()}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+              )}
+            </div>
+          </div>
         ) : activeTab === "maintenance" && userProfile?.role === "founder" ? (
           <div className="space-y-4 max-w-md">
             <div className="p-4 bg-card border border-border/30 rounded-lg">
