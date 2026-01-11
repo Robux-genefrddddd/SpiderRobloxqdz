@@ -119,32 +119,43 @@ export default function AdminPanel() {
     try {
       setLoading(true);
 
-      // Fetch all users
-      const usersCollection = collection(db, "users");
-      const usersSnapshot = await getDocs(usersCollection);
-      const allUsers: User[] = usersSnapshot.docs.map((doc) => ({
-        uid: doc.id,
-        username: doc.data().username,
-        displayName: doc.data().displayName,
-        email: doc.data().email,
-        role: doc.data().role,
-        profileImage: doc.data().profileImage,
-        isBanned: doc.data().isBanned || false,
-        banReason: doc.data().banReason,
-        createdAt: doc.data().createdAt?.toDate?.() || new Date(),
-        memberRank: doc.data().memberRank,
-      }));
+      // Support staff can only see tickets
+      if (userProfile?.role === "support") {
+        const allTickets = await getAllTickets();
+        setTickets(allTickets);
+      } else {
+        // Admin and founder can see users, logs, and tickets
+        // Fetch all users
+        const usersCollection = collection(db, "users");
+        const usersSnapshot = await getDocs(usersCollection);
+        const allUsers: User[] = usersSnapshot.docs.map((doc) => ({
+          uid: doc.id,
+          username: doc.data().username,
+          displayName: doc.data().displayName,
+          email: doc.data().email,
+          role: doc.data().role,
+          profileImage: doc.data().profileImage,
+          isBanned: doc.data().isBanned || false,
+          banReason: doc.data().banReason,
+          createdAt: doc.data().createdAt?.toDate?.() || new Date(),
+          memberRank: doc.data().memberRank,
+        }));
 
-      setUsers(allUsers);
+        setUsers(allUsers);
 
-      // Fetch audit logs
-      const logs = await getAuditLogs();
-      setAuditLogs(logs as AuditLog[]);
+        // Fetch audit logs
+        const logs = await getAuditLogs();
+        setAuditLogs(logs as AuditLog[]);
 
-      // Fetch broadcast messages (founder only)
-      if (userProfile?.role === "founder") {
-        const messages = await getAllBroadcastMessages();
-        setBroadcastMessages(messages);
+        // Fetch tickets
+        const allTickets = await getAllTickets();
+        setTickets(allTickets);
+
+        // Fetch broadcast messages (founder only)
+        if (userProfile?.role === "founder") {
+          const messages = await getAllBroadcastMessages();
+          setBroadcastMessages(messages);
+        }
       }
     } catch (error) {
       console.error("Error loading data:", error);
