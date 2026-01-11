@@ -219,7 +219,7 @@ const statsHandler: Handler = async (event, context): Promise<any> => {
  *
  * Returns recent audit logs (admin only)
  */
-const auditHandler: Handler = async (event, context) => {
+const auditHandler: Handler = async (event, context): Promise<any> => {
   try {
     // In production, add admin authentication check
     const limit = Math.min(
