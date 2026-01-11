@@ -50,8 +50,8 @@ export async function validateImage(
 
     console.log("[ImageValidation] Sending image to server:", file.name);
 
-    // Send to server validation endpoint
-    const response = await fetch("/api/nsfw-check", {
+    // Send to Netlify Function validation endpoint
+    const response = await fetch("/.netlify/functions/nsfw-check", {
       method: "POST",
       body: formData,
     });
