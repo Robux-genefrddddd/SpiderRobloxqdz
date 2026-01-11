@@ -1,4 +1,4 @@
-import { Upload as UploadIcon, X, Image as ImageIcon } from "lucide-react";
+import { Upload as UploadIcon, X, Image as ImageIcon, CheckCircle, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { validateImage, getValidationErrorMessage } from "@/lib/imageValidationService";
 import { toast } from "sonner";
@@ -27,6 +27,8 @@ export function UploadStep1({
 }: UploadStep1Props) {
   const [dragActive, setDragActive] = useState(false);
   const [bannerDragActive, setBannerDragActive] = useState(false);
+  const [bannerValidating, setBannerValidating] = useState(false);
+  const [filesValidating, setFilesValidating] = useState(false);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
