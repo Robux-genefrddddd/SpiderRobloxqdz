@@ -324,7 +324,7 @@ describe("Image Validation Service", () => {
   });
 
   describe("API Communication", () => {
-    it("should send image to /api/nsfw-check endpoint", async () => {
+    it("should send image to /.netlify/functions/nsfw-check endpoint", async () => {
       (global.fetch as any).mockResolvedValueOnce({
         ok: true,
         json: async () => ({
@@ -337,7 +337,7 @@ describe("Image Validation Service", () => {
       const file = createMockImageFile();
       await validateImage(file);
 
-      expect(global.fetch).toHaveBeenCalledWith("/api/nsfw-check", {
+      expect(global.fetch).toHaveBeenCalledWith("/.netlify/functions/nsfw-check", {
         method: "POST",
         body: expect.any(FormData),
       });
